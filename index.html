@@ -1,0 +1,2677 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Valuador IPE · Tottus · Mercer IPE 3.1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+
+/* ══ VALUADOR IPE TOTTUS — Sistema de Diseño ══
+   Paleta: Pizarra profundo + Índigo eléctrico + Ámbar dorado
+   Tipografía: Inter (datos/UI) + JetBrains Mono (números)
+   Firma: El grado IPE como cifra protagonista en panel oscuro
+   ══════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* Superficies */
+  --bg:       #0D0F14;
+  --s1:       #131620;
+  --s2:       #1A1D2A;
+  --s3:       #222537;
+  --s4:       #2A2E43;
+
+  /* Texto */
+  --t1: #F0F2F8;
+  --t2: #A8ABBE;
+  --t3: #5C6079;
+
+  /* Bordes */
+  --b1: rgba(255,255,255,.06);
+  --b2: rgba(255,255,255,.10);
+  --b3: rgba(255,255,255,.16);
+
+  /* Acentos */
+  --ind:   #6366F1;
+  --ind2:  #818CF8;
+  --ind-bg:rgba(99,102,241,.10);
+  --gold:  #F59E0B;
+  --gold-bg:rgba(245,158,11,.10);
+  --ok:    #10B981;
+  --ok-bg: rgba(16,185,129,.10);
+  --err:   #EF4444;
+  --err-bg:rgba(239,68,68,.10);
+  --warn:  #F59E0B;
+  --warn-bg:rgba(245,158,11,.10);
+
+  /* Factor colors */
+  --imp: #22D3EE; --imp-bg:rgba(34,211,238,.08);
+  --com: #FB923C; --com-bg:rgba(251,146,60,.08);
+  --inn: #A78BFA; --inn-bg:rgba(167,139,250,.08);
+  --con: #34D399; --con-bg:rgba(52,211,153,.08);
+  --rie: #F87171; --rie-bg:rgba(248,113,113,.08);
+
+  /* Tipografía */
+  --f: 'Inter', system-ui, -apple-system, sans-serif;
+  --m: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Radios */
+  --r1:4px; --r2:8px; --r3:12px; --r4:16px;
+
+  /* ── Aliases para compatibilidad con motor v2 ── */
+  --brand:    #6366F1;
+  --ink:      #F0F2F8;
+  --ink2:     #A8ABBE;
+  --muted:    #5C6079;
+  --surface:  #131620;
+  --surface2: #1A1D2A;
+  --surface3: #222537;
+  --line:     rgba(255,255,255,.06);
+  --line2:    rgba(255,255,255,.10);
+  --body:     'Inter', system-ui, sans-serif;
+  --mono:     'JetBrains Mono', monospace;
+  --disp:     'Inter', system-ui, sans-serif;
+  --r:        8px;
+
+}
+
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+html { background:var(--bg); }
+body {
+  background:var(--bg);
+  color:var(--t1);
+  font-family:var(--f);
+  font-size:14px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background:var(--s1);
+  border-bottom:1px solid var(--b1);
+  padding:0 24px;
+  height:52px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+.logo {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+}
+.logo-mark {
+  width:28px;
+  height:28px;
+  background:var(--ind);
+  border-radius:6px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--m);
+  font-weight:600;
+  font-size:11px;
+  color:#fff;
+  letter-spacing:-.5px;
+  flex-shrink:0;
+}
+.logo-name {
+  font-size:14.5px;
+  font-weight:600;
+  color:var(--t1);
+  letter-spacing:-.2px;
+}
+.logo-name span { color:var(--ind2); }
+.logo-tag {
+  font-family:var(--m);
+  font-size:10px;
+  color:var(--t3);
+}
+#fbStatus {
+  margin-left:auto;
+  font-family:var(--m);
+  font-size:11px;
+  padding:3px 10px;
+  border-radius:99px;
+  background:var(--s3);
+  color:var(--t3);
+  border:1px solid var(--b2);
+}
+
+/* ── NAV ── */
+nav {
+  background:var(--s1);
+  border-bottom:1px solid var(--b1);
+  padding:0 24px;
+}
+.nrow {
+  display:flex;
+  gap:0;
+  max-width:1260px;
+  margin:0 auto;
+}
+nav button {
+  background:none;
+  border:none;
+  font-family:var(--f);
+  font-weight:500;
+  font-size:13.5px;
+  color:var(--t3);
+  padding:12px 16px;
+  cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:color .15s, border-color .15s;
+  letter-spacing:.1px;
+}
+nav button.on { color:var(--ind2); border-bottom-color:var(--ind); }
+nav button:hover:not(.on) { color:var(--t2); }
+
+/* ── PÁGINAS ── */
+.page { display:none; max-width:1260px; margin:24px auto; padding:0 24px; }
+.page.on { display:block; }
+.two-col { display:grid; grid-template-columns:1fr 300px; gap:18px; align-items:start; }
+.sticky-panel { position:sticky; top:76px; }
+@media(max-width:960px) {
+  .two-col { grid-template-columns:1fr; }
+  .sticky-panel { position:static; }
+}
+
+/* ── CARDS ── */
+.card {
+  background:var(--s1);
+  border:1px solid var(--b1);
+  border-radius:var(--r4);
+  padding:18px;
+  margin-bottom:14px;
+}
+.card-title {
+  font-size:11px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.7px;
+  color:var(--t3);
+  margin-bottom:14px;
+}
+
+/* ── TABS DE MODO ── */
+.mode-tabs {
+  display:flex;
+  background:var(--s2);
+  border-radius:var(--r3);
+  padding:3px;
+  margin-bottom:16px;
+  border:1px solid var(--b1);
+  gap:2px;
+}
+.mode-tab {
+  flex:1;
+  padding:7px 12px;
+  border:none;
+  border-radius:var(--r2);
+  font-family:var(--f);
+  font-size:13px;
+  font-weight:500;
+  cursor:pointer;
+  background:transparent;
+  color:var(--t3);
+  transition:all .15s;
+}
+.mode-tab.on {
+  background:var(--s4);
+  color:var(--t1);
+}
+
+/* ── INPUTS ── */
+textarea, input[type=text], input[type=number], select {
+  font-family:var(--f);
+  font-size:13.5px;
+  color:var(--t1);
+  background:var(--s2);
+  border:1px solid var(--b2);
+  border-radius:var(--r2);
+  padding:8px 11px;
+  width:100%;
+  transition:border-color .15s, box-shadow .15s;
+}
+textarea { min-height:88px; resize:vertical; line-height:1.55; }
+textarea:focus, input:focus, select:focus {
+  outline:none;
+  border-color:var(--ind);
+  box-shadow:0 0 0 3px var(--ind-bg);
+}
+select option { background:var(--s3); }
+.ctx {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:12px 0;
+  align-items:flex-end;
+}
+.ctx label {
+  font-size:10.5px;
+  color:var(--t3);
+  display:block;
+  margin-bottom:4px;
+  font-weight:500;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+.ctx select, .ctx input[type=text] { width:auto; }
+.toggle {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:13px;
+  color:var(--t2);
+  cursor:pointer;
+}
+.toggle input { accent-color:var(--ind); width:14px; height:14px; }
+
+/* ── BOTONES ── */
+.btn {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:var(--f);
+  font-size:13.5px;
+  font-weight:500;
+  border-radius:var(--r2);
+  padding:8px 14px;
+  cursor:pointer;
+  border:1px solid transparent;
+  transition:all .15s;
+  line-height:1;
+  text-decoration:none;
+}
+.btn:not(.sec):not(.gold) {
+  background:var(--ind);
+  color:#fff;
+  border-color:var(--ind);
+}
+.btn:not(.sec):not(.gold):hover { background:var(--ind2); }
+.btn.sec {
+  background:var(--s3);
+  color:var(--t2);
+  border-color:var(--b2);
+}
+.btn.sec:hover { background:var(--s4); color:var(--t1); border-color:var(--b3); }
+.btn.gold { background:var(--gold); color:#0D0F14; font-weight:600; }
+.btn.gold:hover { filter:brightness(1.1); }
+.btn:disabled { opacity:.4; cursor:wait; }
+.spin {
+  width:12px; height:12px;
+  border:2px solid rgba(255,255,255,.25);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+  display:inline-block;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* ── ALERTAS ── */
+.err {
+  background:var(--err-bg);
+  border:1px solid rgba(239,68,68,.2);
+  color:var(--err);
+  border-radius:var(--r2);
+  padding:9px 12px;
+  font-size:13px;
+  margin-top:10px;
+  display:none;
+  line-height:1.5;
+}
+.qs {
+  background:var(--warn-bg);
+  border:1px solid rgba(245,158,11,.2);
+  color:var(--warn);
+  border-radius:var(--r2);
+  padding:9px 12px;
+  font-size:13px;
+  margin-top:10px;
+  display:none;
+  line-height:1.5;
+}
+.ok {
+  background:var(--ok-bg);
+  border:1px solid rgba(16,185,129,.2);
+  color:var(--ok);
+  border-radius:var(--r2);
+  padding:9px 12px;
+  font-size:13px;
+  margin-top:10px;
+  display:none;
+  line-height:1.5;
+}
+
+/* ── DESCRIPTOR ── */
+.doc-load-bar {
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:10px 13px;
+  background:var(--s2);
+  border-radius:var(--r2);
+  border:1.5px dashed var(--b2);
+  margin-bottom:14px;
+}
+#descDetails summary {
+  cursor:pointer;
+  font-size:10.5px;
+  font-weight:600;
+  color:var(--t3);
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  padding:6px 0;
+  list-style:none;
+  user-select:none;
+}
+#descDetails summary::-webkit-details-marker { display:none; }
+.dc-section { margin-bottom:18px; }
+.dc-section-title {
+  font-size:10px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.7px;
+  color:var(--ind2);
+  margin-bottom:10px;
+  padding-bottom:7px;
+  border-bottom:1px solid var(--b1);
+}
+.dc-field { margin-bottom:10px; }
+.dc-label {
+  font-size:11.5px;
+  font-weight:500;
+  color:var(--t2);
+  display:block;
+  margin-bottom:4px;
+}
+.dc-req { color:var(--err); margin-left:2px; }
+.dc-input {
+  width:100%;
+  border:1px solid var(--b2);
+  border-radius:var(--r1);
+  background:var(--s2);
+  color:var(--t1);
+  font-family:var(--f);
+  font-size:13.5px;
+  padding:7px 10px;
+  transition:border-color .15s;
+}
+.dc-input:focus { outline:none; border-color:var(--ind); }
+.dc-ta { min-height:60px; resize:vertical; line-height:1.5; }
+.dc-num { width:100px; }
+
+/* ── FACTORES ── */
+.factor {
+  border-radius:var(--r3);
+  border:1px solid;
+  padding:16px;
+  margin-bottom:10px;
+  position:relative;
+}
+.factor::before {
+  content:'';
+  position:absolute;
+  top:0; left:0; right:0;
+  height:2px;
+  border-radius:var(--r3) var(--r3) 0 0;
+  background:var(--fc, var(--ind));
+}
+.factor h2 {
+  font-size:13.5px;
+  font-weight:600;
+  color:var(--fc, var(--ind2));
+  margin-bottom:4px;
+}
+.pts {
+  float:right;
+  font-family:var(--m);
+  font-size:12px;
+  font-weight:600;
+  color:var(--fc, var(--ind2));
+  background:rgba(99,102,241,.1);
+  padding:3px 10px;
+  border-radius:99px;
+}
+.hint {
+  font-size:12.5px;
+  color:var(--t3);
+  margin-bottom:12px;
+  line-height:1.55;
+}
+
+/* Factor variantes */
+.factor[style*="--imp"]{background:var(--imp-bg);border-color:rgba(34,211,238,.15);--fc:var(--imp)}
+.factor[style*="--com"]{background:var(--com-bg);border-color:rgba(251,146,60,.15);--fc:var(--com)}
+.factor[style*="--inn"]{background:var(--inn-bg);border-color:rgba(167,139,250,.15);--fc:var(--inn)}
+.factor[style*="--con"]{background:var(--con-bg);border-color:rgba(52,211,153,.15);--fc:var(--con)}
+.factor[style*="--rie"]{background:var(--rie-bg);border-color:rgba(248,113,113,.15);--fc:var(--rie)}
+
+/* ── DIMENSIONES ── */
+.dim { margin:12px 0; }
+.dim>.dlabel {
+  font-weight:600;
+  font-size:12.5px;
+  margin-bottom:6px;
+  color:var(--t2);
+  display:flex;
+  align-items:baseline;
+  gap:6px;
+}
+.dim>.dlabel .req {
+  font-size:11px;
+  color:var(--t3);
+  font-weight:400;
+}
+.chips { display:flex; flex-wrap:wrap; gap:5px; }
+.chip {
+  border:1px solid var(--b2);
+  background:var(--s2);
+  border-radius:var(--r1);
+  padding:5px 10px;
+  font-family:var(--m);
+  font-size:11.5px;
+  font-weight:500;
+  cursor:pointer;
+  color:var(--t2);
+  transition:all .12s;
+}
+.chip:hover { border-color:var(--fc, var(--ind)); color:var(--t1); }
+.chip.on {
+  background:color-mix(in srgb, var(--fc, var(--ind)) 18%, var(--s2));
+  border-color:var(--fc, var(--ind));
+  color:var(--t1);
+}
+.chip.blocked { opacity:.25; text-decoration:line-through; cursor:not-allowed; }
+.chip .cname { font-family:var(--f); font-weight:400; font-size:11.5px; margin-left:3px; }
+.def {
+  background:var(--s2);
+  border-radius:var(--r1);
+  padding:9px 12px;
+  font-size:12.5px;
+  color:var(--t2);
+  margin-top:7px;
+  display:none;
+  border-left:2px solid var(--fc, var(--ind));
+  line-height:1.55;
+}
+.def.show { display:block; }
+.just { margin-top:7px; display:none; }
+.just.show { display:block; }
+.just .jlab {
+  font-size:10px;
+  font-weight:600;
+  color:var(--t3);
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  margin-bottom:4px;
+}
+.conf {
+  display:inline-block;
+  font-family:var(--m);
+  font-size:10px;
+  font-weight:600;
+  padding:1px 7px;
+  border-radius:99px;
+  margin-left:6px;
+  vertical-align:1px;
+}
+.conf.alta{background:var(--ok-bg);color:var(--ok)}
+.conf.media{background:var(--warn-bg);color:var(--warn)}
+.conf.baja{background:var(--err-bg);color:var(--err)}
+
+/* ── PANEL RESULTADO ── */
+.ladder-card {
+  background:var(--s1);
+  border:1px solid var(--b2);
+  border-radius:var(--r4);
+  padding:20px;
+}
+.ladder-card h2 {
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  color:var(--t3);
+  margin-bottom:14px;
+}
+.grade-big {
+  font-family:'Inter', sans-serif;
+  font-weight:700;
+  font-size:68px;
+  line-height:1;
+  text-align:center;
+  letter-spacing:-3px;
+  color:var(--gold);
+}
+.grade-big small {
+  display:block;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:2px;
+  color:var(--t3);
+  text-transform:uppercase;
+  margin-top:4px;
+}
+.cband {
+  text-align:center;
+  font-size:12px;
+  color:var(--t2);
+  margin-top:6px;
+  min-height:16px;
+  font-weight:500;
+}
+.total-pts {
+  text-align:center;
+  font-family:var(--m);
+  font-size:12px;
+  color:var(--t3);
+  margin:8px 0 14px;
+  min-height:16px;
+}
+.fbar {
+  display:flex;
+  height:3px;
+  border-radius:99px;
+  overflow:hidden;
+  background:var(--s3);
+  margin-bottom:8px;
+}
+.fbar div { transition:width .35s ease; }
+.flegend {
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px 12px;
+  font-size:10px;
+  color:var(--t3);
+  margin-bottom:14px;
+  font-family:var(--m);
+}
+.flegend i {
+  display:inline-block;
+  width:6px; height:6px;
+  border-radius:50%;
+  margin-right:4px;
+  vertical-align:1px;
+}
+.ladder { border-left:1px solid var(--b2); margin-left:8px; }
+.lrow {
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  height:24px;
+  font-family:var(--m);
+  font-size:11px;
+  color:var(--t3);
+}
+.lrow .g { width:26px; text-align:right; font-weight:600; padding-left:10px; }
+.lrow .rng { font-size:10px; }
+.lrow .cb { font-size:10px; margin-left:auto; color:var(--t3); opacity:.6; overflow:hidden; white-space:nowrap; max-width:100px; }
+.lrow.cur { color:var(--t1); }
+.lrow.cur .g { color:var(--gold); font-size:14px; font-weight:700; }
+.lrow.cur::before {
+  content:'';
+  position:absolute;
+  left:-4px;
+  width:8px; height:8px;
+  border-radius:50%;
+  background:var(--gold);
+}
+.edge {
+  font-size:11px;
+  font-family:var(--m);
+  color:var(--t3);
+  margin-top:10px;
+  line-height:1.7;
+}
+#bandBox {
+  background:var(--s2);
+  border-radius:var(--r2);
+  padding:12px;
+  margin-top:12px;
+  display:none;
+  border:1px solid var(--b1);
+}
+#bandBox .bb-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:8px;
+}
+#bandBox .bb-title {
+  font-size:9.5px;
+  font-weight:700;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+  color:var(--t3);
+}
+#bandBox select {
+  background:var(--s3);
+  color:var(--t2);
+  border:1px solid var(--b2);
+  border-radius:4px;
+  font-size:11px;
+  padding:2px 6px;
+  width:auto;
+}
+#bandBox .bb-vals {
+  font-family:var(--m);
+  font-size:12px;
+  color:var(--t2);
+  line-height:2;
+}
+
+/* ── CLASIFICACIÓN MERCER ── */
+#mercerBox {
+  background:var(--s2);
+  border:1px solid var(--b1);
+  border-radius:var(--r2);
+  padding:12px;
+  margin-top:12px;
+}
+
+/* ── INSIGHTS ── */
+.insights { margin-top:4px; }
+.insights h3 {
+  font-size:10.5px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.6px;
+  color:var(--t3);
+  margin:16px 0 8px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.insights h3::after { content:''; flex:1; border-top:1px solid var(--b1); }
+.sens {
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+.sens th {
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+  color:var(--t3);
+  padding:5px 8px;
+  border-bottom:1px solid var(--b2);
+  text-align:left;
+  font-weight:600;
+}
+.sens td {
+  padding:7px 8px;
+  border-bottom:1px solid var(--b1);
+  color:var(--t2);
+}
+.up{color:var(--ok);font-weight:600}
+.dn{color:var(--err);font-weight:600}
+.mono{font-family:var(--m)}
+.resume-box {
+  background:var(--s2);
+  border:1px solid var(--b1);
+  border-radius:var(--r2);
+  padding:14px;
+  font-size:13.5px;
+  white-space:pre-wrap;
+  line-height:1.7;
+  margin-top:10px;
+  display:none;
+  color:var(--t2);
+}
+.chartbox { position:relative; width:100%; }
+
+/* ── MAPA ── */
+.drop {
+  border:1.5px dashed var(--b2);
+  border-radius:var(--r3);
+  padding:24px;
+  text-align:center;
+  color:var(--t3);
+  background:var(--s2);
+  cursor:pointer;
+  transition:all .15s;
+  font-size:13.5px;
+  margin-bottom:14px;
+}
+.drop:hover, .drop.hover {
+  border-color:var(--ind);
+  background:var(--ind-bg);
+  color:var(--ind2);
+}
+.kpis {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
+  gap:10px;
+  margin-bottom:16px;
+}
+.kpi {
+  background:var(--s2);
+  border:1px solid var(--b1);
+  border-radius:var(--r3);
+  padding:12px 14px;
+}
+.kpi .kv {
+  font-size:22px;
+  font-weight:700;
+  color:var(--t1);
+  letter-spacing:-.5px;
+  font-family:'Inter',sans-serif;
+}
+.kpi .kl {
+  font-size:10px;
+  color:var(--t3);
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  font-weight:600;
+  margin-top:3px;
+}
+.hier details {
+  border:1px solid var(--b1);
+  border-radius:var(--r2);
+  margin:5px 0;
+  background:var(--s1);
+}
+.hier summary {
+  padding:9px 12px;
+  font-weight:600;
+  font-size:13px;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  list-style:none;
+  color:var(--t2);
+}
+.hier summary::-webkit-details-marker{display:none}
+.hier summary .hmeta {
+  font-family:var(--m);
+  font-size:11px;
+  color:var(--t3);
+  font-weight:400;
+}
+.hrow, .hrowj {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:6px 12px;
+  border-top:1px solid var(--b1);
+  font-size:13px;
+  color:var(--t2);
+}
+.gchip {
+  font-family:var(--m);
+  font-weight:700;
+  font-size:11.5px;
+  background:var(--s3);
+  color:var(--gold);
+  border-radius:4px;
+  padding:1px 8px;
+  border:1px solid var(--gold-bg);
+}
+
+/* ── ORGANIGRAMA ── */
+.org-wrap { overflow:auto; padding:4px; }
+.org-matrix { border:1px solid var(--b1); border-radius:var(--r3); overflow:hidden; }
+.org-band-row {
+  display:grid;
+  grid-template-columns:72px 1fr;
+  border-bottom:1px solid var(--b1);
+}
+.org-band-row:last-child { border-bottom:none; }
+.org-band-label {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:8px;
+  writing-mode:vertical-rl;
+  text-orientation:mixed;
+  transform:rotate(180deg);
+  font-size:9px;
+  font-weight:700;
+  color:#fff;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+  border-right:1px solid rgba(255,255,255,.1);
+  min-height:70px;
+}
+.org-band-label.band-clevel{background:#1B4332}
+.org-band-label.band-tm{background:#2D6A4F}
+.org-band-label.band-mm{background:#40916C}
+.org-band-label.band-jm{background:#52B788}
+.org-band-label.band-ep{background:#74C69D;color:#1B4332}
+.org-cells { display:flex; flex-wrap:wrap; gap:7px; padding:10px; align-items:flex-start; min-height:60px; }
+.org-col { display:flex; flex-direction:column; gap:5px; align-items:center; min-width:130px; }
+.org-gerencia-label {
+  font-size:8.5px;
+  font-weight:700;
+  color:var(--ind2);
+  text-align:center;
+  margin-bottom:2px;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+}
+.org-card {
+  background:var(--s2);
+  border:1px solid var(--b2);
+  border-radius:var(--r2);
+  padding:8px 10px;
+  width:130px;
+  cursor:pointer;
+  transition:border-color .12s;
+}
+.org-card:hover { border-color:var(--ind); }
+.org-card.session { border-color:var(--gold); background:var(--gold-bg); }
+.org-card .oc-ger { font-size:8.5px; text-transform:uppercase; letter-spacing:.3px; color:var(--t3); margin-bottom:2px; }
+.org-card .oc-cargo { font-size:11.5px; font-weight:600; color:var(--t1); line-height:1.3; margin-bottom:5px; }
+.org-card .oc-ipe {
+  display:inline-block;
+  font-family:var(--m);
+  font-size:11px;
+  font-weight:600;
+  background:var(--s3);
+  color:var(--gold);
+  border-radius:3px;
+  padding:1px 6px;
+}
+
+/* ── MASIVO ── */
+.masive-drop {
+  border:1.5px dashed var(--b2);
+  border-radius:var(--r3);
+  padding:24px;
+  text-align:center;
+  color:var(--t3);
+  background:var(--s2);
+  cursor:pointer;
+  transition:all .15s;
+  font-size:13.5px;
+  margin-bottom:14px;
+}
+.masive-drop:hover, .masive-drop.hover {
+  border-color:var(--ind);
+  background:var(--ind-bg);
+  color:var(--ind2);
+}
+.masive-row {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:7px 0;
+  border-bottom:1px solid var(--b1);
+  font-size:13px;
+}
+.masive-row:last-child { border-bottom:none; }
+.masive-status {
+  font-family:var(--m);
+  font-size:10.5px;
+  padding:2px 9px;
+  border-radius:99px;
+  flex-shrink:0;
+}
+.masive-status.pending{background:var(--s3);color:var(--t3)}
+.masive-status.ok{background:var(--ok-bg);color:var(--ok)}
+.masive-status.err{background:var(--err-bg);color:var(--err)}
+.masive-status.running{background:var(--ind-bg);color:var(--ind2)}
+.masive-cargo{font-weight:500;color:var(--t1);flex:1}
+.masive-ipe{font-family:var(--m);font-weight:700;color:var(--gold)}
+
+/* ── SET ── */
+.set-card {
+  background:var(--s2);
+  border:1px solid var(--b1);
+  border-radius:var(--r3);
+  padding:14px 16px;
+  margin-bottom:10px;
+  position:relative;
+}
+.set-card .set-cargo{font-weight:700;font-size:14px;color:var(--t1);margin-bottom:2px}
+.set-card .set-meta{font-size:12px;color:var(--t3);font-family:var(--m)}
+.set-card .set-ipe{position:absolute;top:14px;right:14px;font-size:28px;font-weight:700;font-family:'Inter',sans-serif;color:var(--gold);letter-spacing:-1px;line-height:1}
+.set-card .set-pts{font-family:var(--m);font-size:11px;color:var(--t3);margin-top:2px}
+.set-card .set-actions{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+.set-card .set-btn{font-size:12px;padding:5px 10px;border-radius:var(--r1);border:1px solid var(--b2);background:var(--s3);color:var(--t2);cursor:pointer;transition:all .12s}
+.set-card .set-btn:hover{border-color:var(--ind);color:var(--ind2)}
+
+/* ── COMPARADOR ── */
+.cmp-search-wrap{display:grid;grid-template-columns:1fr 38px 1fr;gap:12px;align-items:start;margin-bottom:20px}
+.cmp-vs{display:flex;align-items:center;justify-content:center;font-family:var(--m);font-weight:700;font-size:12px;color:var(--t3);background:var(--s2);border-radius:50%;width:38px;height:38px;border:1px solid var(--b2);margin-top:24px;flex-shrink:0}
+.cmp-slot{background:var(--s2);border:1px solid var(--b2);border-radius:var(--r3);overflow:hidden;min-height:90px}
+.cmp-search-box{position:relative}
+.cmp-search-box input{width:100%}
+.cmp-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--s3);border:1px solid var(--b2);border-radius:var(--r3);z-index:100;max-height:220px;overflow-y:auto;display:none}
+.cmp-dropdown.open{display:block}
+.cmp-opt{padding:9px 13px;cursor:pointer;font-size:13px;border-bottom:1px solid var(--b1);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.cmp-opt:last-child{border-bottom:none}
+.cmp-opt:hover{background:var(--s4)}
+.cmp-opt .co-name{font-weight:500;color:var(--t1)}
+.cmp-opt .co-meta{font-size:11px;color:var(--t3)}
+.cmp-opt .co-ipe{font-family:var(--m);font-weight:600;font-size:11px;background:var(--s4);color:var(--gold);border-radius:3px;padding:1px 6px;flex-shrink:0}
+.cmp-card-content{padding:14px}
+.cmp-card-ipe{font-weight:700;font-size:42px;letter-spacing:-2px;line-height:1;color:var(--gold)}
+.cmp-card-name{font-size:14px;font-weight:600;color:var(--t1);margin:3px 0 2px}
+.cmp-card-ger{font-size:11.5px;color:var(--t3);margin-bottom:8px}
+.cmp-compare-table{border-radius:var(--r3);overflow:hidden;border:1px solid var(--b1);margin-top:18px}
+.cmp-ct-header{display:grid;grid-template-columns:160px 1fr 1fr;background:var(--s2);border-bottom:1px solid var(--b2)}
+.cmp-ct-header>div{padding:9px 13px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3)}
+.cmp-ct-row{display:grid;grid-template-columns:160px 1fr 1fr;border-bottom:1px solid var(--b1)}
+.cmp-ct-row:last-child{border-bottom:none}
+.cmp-ct-row:hover{background:var(--ind-bg)}
+.cmp-ct-row.highlight{background:var(--gold-bg)}
+.cmp-ct-dim{padding:10px 13px;font-size:13px;font-weight:500;color:var(--t2);display:flex;align-items:center;border-right:1px solid var(--b1)}
+.cmp-ct-val{padding:10px 13px;font-size:13px;display:flex;align-items:center;gap:8px}
+.cmp-ct-val .cv-num{font-family:var(--m);font-weight:600;font-size:14px;color:var(--t1);min-width:26px}
+.cmp-ct-val .cv-bar{height:4px;border-radius:2px;background:var(--ind);opacity:.6}
+.cmp-ct-val .cv-win{color:var(--ok);font-size:11px;font-weight:600;margin-left:auto}
+.cmp-diff-banner{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r3);padding:14px;margin-top:14px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+
+/* ── METODOLOGÍA ── */
+.meth h3{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--ind2);margin:20px 0 8px}
+.meth p{margin-bottom:10px;color:var(--t2);line-height:1.65;font-size:14px}
+.meth table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+.meth td,.meth th{border:1px solid var(--b2);padding:7px 10px;color:var(--t2)}
+.meth th{background:var(--s2);font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);font-weight:600}
+code{font-family:var(--m);font-size:11.5px;background:var(--s2);border:1px solid var(--b2);padding:1px 5px;border-radius:3px;color:var(--t2)}
+
+/* ── MISC ── */
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+
+/* ── Compatibilidad clases v2 ── */
+.meta { font-family:var(--mono); font-size:11px; color:var(--muted); }
+.ok { background:var(--ok-bg,rgba(16,185,129,.1)); border:1px solid rgba(16,185,129,.2); color:var(--ok,#10B981); border-radius:8px; padding:9px 12px; font-size:13px; margin-top:10px; display:none; line-height:1.5; }
+.on { background:color-mix(in srgb,var(--brand,#6366F1) 18%,var(--surface2,#1A1D2A)); border-color:var(--brand,#6366F1) !important; color:var(--ink,#F0F2F8); }
+
+</style>
+</head>
+<body>
+
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">IPE</div>
+    <span class="logo-name">Valuador <span>IPE</span> · Tottus</span>
+  </div>
+  <span class="logo-tag">Mercer IPE 3.1 · motor validado · org 10</span>
+  <span id="fbStatus">&#x23F3; Firebase…</span>
+</header>
+
+<nav><div class="nrow">
+  <button class="on" data-page="pgVal">Valuar cargo</button>
+  <button data-page="pgMap">Mapa de cargos</button>
+  <button data-page="pgComp">Comparador</button>
+  <button data-page="pgMet">Metodología</button>
+</div></nav>
+
+<!-- ============ PÁGINA: VALUAR ============ -->
+<div class="page on" id="pgVal">
+
+  <!-- TABS modo -->
+  <div class="mode-tabs" style="max-width:1260px;margin:20px auto 0;padding:0 24px">
+    <button class="mode-tab on" id="tabInd" onclick="switchMode('ind')">Valuación individual</button>
+    <button class="mode-tab" id="tabMas" onclick="switchMode('mas')">Valuación masiva</button>
+    <button class="mode-tab" id="tabSet" onclick="switchMode('set')">Registro SET</button>
+  </div>
+
+  <!-- MODO INDIVIDUAL -->
+  <div id="modeInd" style="display:block"><div class="two-col">
+  <div>
+
+    <div class="card">
+      <div class="card-title">Descriptor del cargo</div>
+
+      <!-- Carga de documento externo -->
+      <div class="doc-load-bar">
+        <button class="btn sec" id="docLoadBtn" style="font-size:12px;padding:6px 11px;flex-shrink:0">↑ Cargar descriptor externo</button>
+        <span style="font-size:12px;color:var(--t3)">PDF · Word · Texto — el asistente extrae y pre-rellena el formulario</span>
+        <input type="file" id="docFileInp" accept=".pdf,.doc,.docx,.txt" style="display:none">
+      </div>
+
+      <!-- Identificación rápida -->
+      <div class="ctx">
+        <div><label for="nomCargo">Cargo</label><input type="text" id="nomCargo" placeholder="Ej.: Jefe de Departamento CD" style="width:220px"></div>
+        <div><label for="gerCargo">Gerencia</label><input type="text" id="gerCargo" placeholder="Ej.: Logística" style="width:160px" list="gerList"><datalist id="gerList"></datalist></div>
+        <div><label for="jer">Jerarquía</label>
+          <select id="jer" style="width:190px"><option value="si">Sí — lidera personas</option><option value="no">No — contribuidor individual</option></select></div>
+        <label class="toggle"><input type="checkbox" id="mesa"> Reglas mesa JM</label>
+      </div>
+
+      <!-- Descriptor expandible -->
+      <details id="descDetails" open>
+        <summary>▼ Formulario completo del descriptor (25 campos)</summary>
+        <div id="descriptorIndContainer" style="margin-top:12px"></div>
+      </details>
+
+      <textarea id="desc" style="display:none"></textarea>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+        <button class="btn" id="analizar">Analizar con el asistente IPE</button>
+        <button class="btn sec" id="limpiar">Limpiar</button>
+      </div>
+      <div class="err" id="errbox"></div>
+      <div class="qs" id="qsbox"></div>
+    </div>
+
+    <div class="factor" id="fImp" style="--fc:var(--imp)">
+      <div class="pts" id="p_imp">— pts</div>
+      <h2>Impacto</h2>
+      <p class="hint">Naturaleza y alcance de la influencia × contribución × tamaño (org=10). Factor de mayor peso — 57% teórico.</p>
+      <div id="d_impacto"></div>
+      <div id="d_contribucion"></div>
+    </div>
+
+    <div class="factor" id="fCom" style="--fc:var(--com)">
+      <div class="pts" id="p_com">— pts</div>
+      <h2>Comunicación</h2>
+      <p class="hint">La habilidad de comunicación más exigente y regular del puesto × marco de referencia.</p>
+      <div id="d_comunicacion"></div>
+      <div id="d_marco"></div>
+    </div>
+
+    <div class="factor" id="fInn" style="--fc:var(--inn)">
+      <div class="pts" id="p_inn">— pts</div>
+      <h2>Innovación</h2>
+      <p class="hint">Nivel de innovación esperado × complejidad de los problemas.</p>
+      <div id="d_innovacion"></div>
+      <div id="d_complejidad"></div>
+    </div>
+
+    <div class="factor" id="fCon" style="--fc:var(--con)">
+      <div class="pts" id="p_con">— pts</div>
+      <h2>Conocimiento</h2>
+      <p class="hint">Profundidad mínima requerida × cómo se aplica × alcance geográfico.</p>
+      <div id="d_conocimiento"></div>
+      <div id="d_equipos"></div>
+      <div id="d_amplitud"></div>
+    </div>
+
+    <div class="factor" id="fRie" style="--fc:var(--rie)">
+      <div class="pts" id="p_rie">no aplicado</div>
+      <h2>Riesgo <span style="font-size:12px;font-weight:400;color:var(--t3)">(opcional)</span></h2>
+      <p class="hint">Solo cuando el riesgo físico o mental es una posibilidad cierta en condiciones normales.</p>
+      <div id="d_riesgo"></div>
+    </div>
+
+    <div class="insights" id="insightsCard" style="display:none">
+      <h3>Mezcla de factores</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:4px">
+        <div style="height:200px;position:relative"><canvas id="radarChart"></canvas></div>
+        <div id="mapCtl" style="font-size:13px;color:var(--t3);line-height:1.6;padding-top:8px"></div>
+      </div>
+      <h3>Banda salarial 2026</h3>
+      <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:16px">
+        <div style="height:180px;position:relative"><canvas id="bandChart"></canvas></div>
+        <div>
+          <div id="gradeCost" style="font-size:13px;line-height:1.65;color:var(--t2)"></div>
+          <div style="margin-top:10px">
+            <div style="font-size:10.5px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px">Renta actual (compa-ratio)</div>
+            <input type="text" id="rentaAct" inputmode="numeric" placeholder="Ej.: 48.000.000" style="font-family:var(--m);font-size:13px">
+            <div id="compaBox" style="margin-top:8px;font-size:13px;line-height:1.5;color:var(--t2)"></div>
+          </div>
+        </div>
+      </div>
+      <h3>Sensibilidad — qué movería el grado</h3>
+      <div id="calWarn" class="qs"></div>
+      <table class="sens" id="sensTable"></table>
+      <h3>Resumen educativo para el área</h3>
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <button class="btn sec" id="genResumen">Generar con el asistente</button>
+        <button class="btn sec" id="copyResumen" style="display:none">Copiar</button>
+        <button class="btn gold" id="guardarVal">◆ Guardar en el mapa</button>
+      </div>
+      <div class="ok" id="saveOk"></div>
+      <div class="resume-box" id="resumenBox"></div>
+    </div>
+
+  </div>
+
+  <!-- Panel resultado -->
+  <div class="sticky-panel">
+    <div class="ladder-card">
+      <h2>Grado IPE</h2>
+      <div class="grade-big" id="gradeBig">—<small>selecciona niveles</small></div>
+      <div class="cband" id="cband"></div>
+      <div class="total-pts" id="totalPts"></div>
+      <div class="fbar" id="fbar"></div>
+      <div class="flegend">
+        <span><i style="background:var(--imp)"></i>Impacto</span>
+        <span><i style="background:var(--com)"></i>Comunic.</span>
+        <span><i style="background:var(--inn)"></i>Innov.</span>
+        <span><i style="background:var(--con)"></i>Conoc.</span>
+      </div>
+      <div class="ladder" id="ladder"></div>
+      <div class="edge" id="edgeInfo"></div>
+      <div id="mercerBox" style="display:none"></div>
+      <div id="bandBox">
+        <div class="bb-head">
+          <span class="bb-title">Banda salarial 2026</span>
+          <select id="paisSel"></select>
+        </div>
+        <div id="bandVals" class="bb-vals"></div>
+      </div>
+    </div>
+  </div>
+
+  </div></div><!-- /modeInd -->
+
+  <!-- MODO MASIVO -->
+  <div id="modeMas" style="display:none;max-width:1260px;margin:16px auto;padding:0 24px">
+    <div class="card">
+      <div class="card-title">Carga masiva de descriptores</div>
+      <p style="font-size:13px;color:var(--t3);margin-bottom:14px">Sube un Excel con múltiples cargos. El asistente valuará cada uno en secuencia. <a href="#" onclick="downloadMasiveTemplate();return false" style="color:var(--ind2)">Descargar template →</a></p>
+      <div class="masive-drop" id="masiveDrop">
+        Arrastra tu Excel de descriptores aquí, o haz clic para seleccionar
+        <input type="file" id="masiveFileInp" accept=".xlsx,.xls,.csv" style="display:none">
+      </div>
+      <div class="err" id="masiveErr"></div>
+      <div id="masiveQueue" style="display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <span id="masiveCount" style="font-size:13px;color:var(--t2)"></span>
+          <div style="display:flex;gap:8px">
+            <button class="btn" id="masiveStart">▶ Iniciar valuación masiva</button>
+            <button class="btn sec" id="masiveClear">Limpiar</button>
+          </div>
+        </div>
+        <div style="height:3px;background:var(--s3);border-radius:99px;margin-bottom:12px;overflow:hidden">
+          <div id="masiveProgress" style="height:100%;background:var(--ind);width:0;transition:width .4s;border-radius:99px"></div>
+        </div>
+        <div id="masiveList"></div>
+      </div>
+    </div>
+  </div><!-- /modeMas -->
+
+  <!-- MODO SET -->
+  <div id="modeSet" style="display:none;max-width:1260px;margin:16px auto;padding:0 24px">
+    <div class="card">
+      <div class="card-title">Registro SET de valuaciones</div>
+      <p style="font-size:13px;color:var(--t3);margin-bottom:14px">Historial de valuaciones. Exporta el descriptor y el resultado IPE por separado para cada cargo.</p>
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <button class="btn sec" id="expSetCSV">↓ Exportar todo a CSV</button>
+      </div>
+      <div id="setList"></div>
+    </div>
+  </div><!-- /modeSet -->
+
+</div><!-- /pgVal -->
+
+<!-- ============ PÁGINA: MAPA ============ -->
+<div class="page" id="pgMap">
+  <div class="card">
+    <div class="card-title">Mapa de cargos Tottus</div>
+    <p style="font-size:13px;color:var(--t3);margin-bottom:12px">Carga tu base de cargos vigentes (Excel o CSV) con columnas: <b style="color:var(--t1)">Gerencia</b>, <b style="color:var(--t1)">Cargo</b>, <b style="color:var(--t1)">IPE</b> (opcionales: Rol, Dotación). Las valuaciones guardadas se superponen como ◆.</p>
+    <div class="drop" id="drop">Arrastra tu archivo .xlsx / .csv o haz clic para seleccionar<input type="file" id="fileInp" accept=".xlsx,.xls,.csv,.tsv" style="display:none"></div>
+    <div class="err" id="mapErr"></div>
+    <div class="ok" id="mapOk"></div>
+    <div class="kpis" id="kpis" style="display:none"></div>
+  </div>
+
+  <div id="mapViewTabs" style="display:none;margin-bottom:4px">
+    <div class="mode-tabs">
+      <button class="mode-tab on" id="mapTabBubble" onclick="switchMapView('bubble')">Distribución</button>
+      <button class="mode-tab" id="mapTabMatrix"    onclick="switchMapView('matrix')">Matriz IPE</button>
+      <button class="mode-tab" id="mapTabOrg"       onclick="switchMapView('org')">Organigrama</button>
+      <button class="mode-tab" id="mapTabHist"      onclick="switchMapView('hist')">Histograma</button>
+    </div>
+  </div>
+
+  <div id="mapViewBubble">
+    <div class="card" id="scatterCard" style="display:none">
+      <div class="card-title">Distribución por gerencia · tamaño = dotación · ◆ = sesión</div>
+      <div class="chartbox" style="height:420px"><canvas id="mapChart"></canvas></div>
+    </div>
+  </div>
+
+  <div id="mapViewMatrix" style="display:none">
+    <div class="card">
+      <div class="card-title">Matriz IPE — gerencia × banda de carrera</div>
+      <p style="font-size:12.5px;color:var(--t3);margin-bottom:12px">Intensidad de color = concentración de cargos · ◆ = sesión</p>
+      <div id="matrixContainer" style="overflow-x:auto"></div>
+    </div>
+  </div>
+
+  <div id="mapViewOrg" style="display:none">
+    <div class="card" id="hierCard">
+      <div class="card-title">Organigrama — niveles IPE × gerencias</div>
+      <p style="font-size:12.5px;color:var(--t3);margin-bottom:12px">Filas = banda jerárquica IPE · Columnas = gerencias · ◆ borde dorado = sesión</p>
+      <div class="org-wrap"><div id="orgMatrixContainer"></div></div>
+      <div class="hier" id="hier" style="display:none"></div>
+    </div>
+  </div>
+
+  <div id="mapViewHist" style="display:none">
+    <div class="card" id="histCard" style="display:none">
+      <div class="card-title">Histograma de distribución de grados IPE</div>
+      <div class="chartbox" style="height:280px"><canvas id="histChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card" id="sesCard" style="display:none">
+    <div class="card-title">Valuaciones de esta sesión</div>
+    <table class="sens" id="sesTable"></table>
+    <button class="btn sec" id="expCsv" style="margin-top:12px">↓ Exportar CSV</button>
+  </div>
+</div>
+
+<!-- ============ PÁGINA: COMPARADOR ============ -->
+<div class="page" id="pgComp">
+  <div class="card">
+    <div class="card-title">Comparador de roles</div>
+    <p style="font-size:13px;color:var(--t3);margin-bottom:16px">Busca y selecciona dos cargos para comparar dimensión por dimensión. Incluye cargos del mapa y valuaciones de sesión.</p>
+    <div id="comparadorBody"></div>
+  </div>
+</div>
+
+<!-- ============ PÁGINA: METODOLOGÍA ============ -->
+<div class="page" id="pgMet">
+  <div class="card meth" id="methBody"></div>
+</div>
+
+<script>const TABLES = {"impact_combo": [[null, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5], [1, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5], [1.5, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5], [2, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8], [2.5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5], [3, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11], [3.5, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5], [4, 10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14], [4.5, 11.5, 12, 12.5, 13, 13.5, 14, 14.5, 15, 15.5], [5, 13, 13.5, 14, 14.5, 15, 15.5, 16, 16.5, 17]], "size": [[null, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], [1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [1.5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10], [2, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15], [2.5, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20], [3, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25], [3.5, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 51.5, 52.5], [4, 37, 39, 41, 43, 45, 47, 49, 51, 53, 55, 57, 59, 61, 63, 65, 67, 69, 71, 78, 80], [4.5, 40.5, 43.5, 46.5, 49.5, 52.5, 55.5, 58.5, 61.5, 64.5, 67.5, 70.5, 73.5, 76.5, 79.5, 82.5, 85.5, 88.5, 94, 99.5, 102.5], [5, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 92, 96, 100, 104, 108, 117, 121, 125], [5.5, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 127.5, 135, 142.5, 147.5, 152.5], [6, 56, 62, 68, 74, 80, 86, 92, 98, 104, 110, 116, 122, 128, 134, 140, 151, 162, 168, 174, 180], [6.5, 59.5, 66.5, 73.5, 80.5, 87.5, 94.5, 101.5, 108.5, 115.5, 122.5, 129.5, 136.5, 143.5, 150.5, 160, 172, 181.5, 188.5, 195.5, 202.5], [7, 63, 71, 79, 87, 95, 103, 111, 119, 127, 135, 143, 151, 159, 167, 180, 193, 201, 209, 217, 225], [7.5, 71.5, 80, 88.5, 97, 105.5, 114, 122.5, 131, 139.5, 148, 156.5, 165, 173.5, 184.5, 198, 211.5, 220, 228.5, 237, 245.5], [8, 80, 89, 98, 107, 116, 125, 134, 143, 152, 161, 170, 179, 188, 202, 216, 230, 239, 248, 257, 266], [8.5, 83.5, 93.5, 103.5, 113.5, 123.5, 133.5, 143.5, 153.5, 163.5, 173.5, 183.5, 193.5, 206, 221, 236, 248.5, 258.5, 268.5, 278.5, 288.5], [9, 87, 98, 109, 120, 131, 142, 153, 164, 175, 186, 197, 208, 224, 240, 256, 267, 278, 289, 300, 311], [9.5, 95.5, 107, 118.5, 130, 141.5, 153, 164.5, 176, 187.5, 199, 210.5, 224.5, 241, 257.5, 274, 285.5, 297, 308.5, 320, 331.5], [10, 104, 116, 128, 140, 152, 164, 176, 188, 200, 212, 224, 241, 258, 275, 292, 304, 316, 328, 340, 352], [10.5, 107.5, 120.5, 133.5, 146.5, 159.5, 172.5, 185.5, 198.5, 211.5, 224.5, 240, 258, 276, 294, 309.5, 322.5, 335.5, 348.5, 361.5, 374.5], [11, 111, 125, 139, 153, 167, 181, 195, 209, 223, 237, 256, 275, 294, 313, 327, 341, 355, 369, 383, 397], [11.5, 119.5, 134.5, 149.5, 164.5, 179.5, 194.5, 209.5, 224.5, 239.5, 257, 277, 297, 317, 337, 352, 367, 382, 397, 412, 427], [12, 128, 144, 160, 176, 192, 208, 224, 240, 256, 277, 298, 319, 340, 361, 377, 393, 409, 425, 441, 457], [12.5, 131.5, 148.5, 165.5, 182.5, 199.5, 216.5, 233.5, 250.5, 270, 292, 314, 336, 358, 377.5, 394.5, 411.5, 428.5, 435.5, 462.5, 479.5], [13, 135, 153, 171, 189, 207, 225, 243, 261, 284, 307, 330, 353, 376, 394, 412, 430, 448, 446, 484, 502], [13.5, 141, 160, 179, 198, 217, 236, 255, 276.5, 300.5, 324.5, 348.5, 372.5, 396.5, 415.5, 434.5, 453.5, 472.5, 481.5, 510.5, 529.5], [14, 147, 167, 187, 207, 227, 247, 267, 292, 317, 342, 367, 392, 417, 437, 457, 477, 497, 517, 537, 557], [14.5, 151, 172, 193, 214, 235, 256, 279.5, 305.5, 331.5, 357.5, 381, 407, 433, 454, 475, 496, 517, 538, 559, 580], [15, 155, 177, 199, 221, 243, 265, 292, 319, 346, 373, 395, 422, 449, 471, 493, 515, 537, 559, 581, 603], [15.5, 161.5, 184.5, 207.5, 230.5, 253.5, 279, 307, 335, 363, 391, 416.5, 444.5, 470, 493, 516, 539, 562, 585, 608, 631], [16, 168, 192, 216, 240, 264, 293, 322, 351, 380, 409, 438, 467, 491, 515, 539, 563, 587, 611, 635, 659], [16.5, 172, 197, 222, 247, 274.5, 304.5, 334.5, 364.5, 394.5, 424.5, 454.5, 482, 507, 532, 557, 582, 607, 632, 657, 682], [17, 176, 202, 228, 254, 285, 316, 347, 378, 409, 440, 471, 497, 523, 549, 575, 601, 627, 653, 679, 705]], "comm": [[null, 1, 1.5, 2, 2.5, 3, 3.5, 4], [1, 10, 17.5, 25, 27.5, 30, 37.5, 45], [1.5, 17.5, 25, 32.5, 35, 37.5, 45, 52.5], [2, 25, 32.5, 40, 42.5, 45, 52.5, 60], [2.5, 32.5, 40, 47.5, 50, 52.5, 60, 67.5], [3, 40, 47.5, 55, 57.5, 60, 67.5, 75], [3.5, 47.5, 55, 65, 67.5, 70, 77.5, 87.5], [4, 55, 62.5, 75, 77.5, 80, 87.5, 100], [4.5, 62.5, 70, 82.5, 85, 87.5, 95, 107.5], [5, 70, 77.5, 90, 92.5, 95, 102.5, 115]], "innov": [[null, 1, 1.5, 2, 2.5, 3, 3.5, 4], [1, 10, 12.5, 15, 17.5, 20, 22.5, 25], [1.5, 17.5, 20, 22.5, 25, 27.5, 30, 32.5], [2, 25, 27.5, 30, 32.5, 35, 37.5, 40], [2.5, 32.5, 35, 37.5, 40, 42.5, 45, 47.5], [3, 40, 42.5, 45, 47.5, 50, 52.5, 55], [3.5, 52.5, 55, 57.5, 60, 62.5, 65, 67.5], [4, 65, 67.5, 70, 72.5, 75, 77.5, 80], [4.5, 77.5, 80, 82.5, 85, 87.5, 90, 92.5], [5, 90, 92.5, 95, 97.5, 100, 102.5, 105], [5.5, 102.5, 105, 107.5, 110, 112.5, 115, 117.5], [6, 115, 117.5, 120, 122.5, 125, 127.5, 130]], "know_1": [["n°1", 1, 1.5, 2, 2.5, 3], [1, 15, 20, 25, 30, 35], [1.5, 22.5, 27.5, 32.5, 37.5, 42.5], [2, 30, 35, 40, 45, 50], [2.5, 45, 50, 55, 60, 65], [3, 60, 65, 70, 75, 80], [3.5, 75, 80, 85, 90, 95], [4, 90, 95, 100, 105, 110], [4.5, 101.5, 106.5, 111.5, 116.5, 121.5], [5, 113, 118, 123, 128, 133], [5.5, 124, 129, 134, 139, 144], [6, 135, 140, 145, 150, 155], [6.5, 146.5, 151.5, 156.5, 161.5, 166.5], [7, 158, 163, 168, 173, 178], [7.5, 169, 174, 179, 184, 189], [8, 180, 185, 190, 195, 200]], "know_1_5": [["n°1", 1, 1.5, 2, 2.5, 3], [1, 32.5, 37.5, 42.5, 47.5, 52.5], [1.5, 40, 45, 50, 55, 60], [2, 47.5, 52.5, 57.5, 62.5, 67.5], [2.5, 62.5, 67.5, 72.5, 77.5, 82.5], [3, 77.5, 82.5, 87.5, 92.5, 97.5], [3.5, 92.5, 97.5, 102.5, 107.5, 112.5], [4, 107.5, 112.5, 117.5, 122.5, 127.5], [4.5, 119, 124, 129, 134, 139], [5, 130.5, 135.5, 140.5, 145.5, 150.5], [5.5, 141.5, 146.5, 151.5, 156.5, 161.5], [6, 152.5, 157.5, 162.5, 167.5, 172.5], [6.5, 164, 169, 174, 179, 184], [7, 175.5, 180.5, 185.5, 190.5, 195.5], [7.5, 186.5, 191.5, 196.5, 201.5, 206.5], [8, 197.5, 202.5, 207.5, 212.5, 217.5]], "know_2": [["n°1", 1, 1.5, 2, 2.5, 3], [1, 50, 55, 60, 65, 70], [1.5, 57.5, 62.5, 67.5, 72.5, 77.5], [2, 65, 70, 75, 80, 85], [2.5, 80, 85, 90, 95, 100], [3, 95, 100, 105, 110, 115], [3.5, 110, 115, 120, 125, 130], [4, 125, 130, 135, 140, 145], [4.5, 136.5, 141.5, 146.5, 151.5, 156.5], [5, 148, 153, 158, 163, 168], [5.5, 159, 164, 169, 174, 179], [6, 170, 175, 180, 185, 190], [6.5, 181.5, 186.5, 191.5, 196.5, 201.5], [7, 193, 198, 203, 208, 213], [7.5, 204, 209, 214, 219, 224], [8, 215, 220, 225, 230, 235]], "know_2_5": [["n°1", 1, 1.5, 2, 2.5, 3], [1, 62.5, 67.5, 72.5, 77.5, 82.5], [1.5, 70, 75, 80, 85, 90], [2, 77.5, 82.5, 87.5, 92.5, 97.5], [2.5, 92.5, 97.5, 102.5, 107.5, 112.5], [3, 107.5, 112.5, 117.5, 122.5, 127.5], [3.5, 122.5, 127.5, 132.5, 137.5, 142.5], [4, 137.5, 142.5, 147.5, 152.5, 157.5], [4.5, 149, 154, 159, 164, 169], [5, 160.5, 165.5, 170.5, 175.5, 180.5], [5.5, 171.5, 176.5, 181.5, 186.5, 191.5], [6, 182.5, 187.5, 192.5, 197.5, 202.5], [6.5, 194, 199, 204, 209, 214], [7, 205.5, 210.5, 215.5, 220.5, 225.5], [7.5, 216.5, 221.5, 226.5, 231.5, 236.5], [8, 227.5, 232.5, 237.5, 242.5, 247.5]], "know_3": [["n°1", 1, 1.5, 2, 2.5, 3], [1, 75, 80, 85, 90, 95], [1.5, 82.5, 87.5, 92.5, 97.5, 102.5], [2, 90, 95, 100, 105, 110], [2.5, 105, 110, 115, 120, 125], [3, 120, 125, 130, 135, 140], [3.5, 135, 140, 145, 150, 155], [4, 150, 155, 160, 165, 170], [4.5, 161.5, 166.5, 171.5, 176.5, 181.5], [5, 173, 178, 183, 188, 193], [5.5, 184, 189, 194, 199, 204], [6, 195, 200, 205, 210, 215], [6.5, 206.5, 211.5, 216.5, 221.5, 226.5], [7, 218, 223, 228, 233, 238], [7.5, 229, 234, 239, 244, 249], [8, 240, 245, 250, 255, 260]], "grade": [[26, 50, 40], [51, 75, 41], [76, 100, 42], [101, 125, 43], [126, 150, 44], [151, 175, 45], [176, 200, 46], [201, 225, 47], [226, 250, 48], [251, 275, 49], [276, 300, 50], [301, 325, 51], [326, 350, 52], [351, 375, 53], [376, 400, 54], [401, 425, 55], [426, 450, 56], [451, 475, 57], [476, 500, 58], [501, 525, 59], [526, 550, 60], [551, 575, 61], [576, 600, 62], [601, 625, 63], [626, 650, 64], [651, 675, 65], [676, 700, 66], [701, 725, 67], [726, 750, 68], [751, 775, 69], [776, 800, 70], [801, 825, 71], [826, 850, 72], [851, 875, 73], [876, 900, 74], [901, 925, 75], [926, 950, 76], [951, 975, 77], [976, 1000, 78], [1001, 1025, 79], [1026, 1050, 80], [1051, 1075, 81], [1076, 1100, 82], [1101, 1125, 83], [1126, 1150, 84], [1151, 1175, 85], [1176, 1200, 86], [1201, 1225, 87]]};const BANDAS = {"Chile": {"moneda": "CLP", "bandas": [{"lo": 40, "hi": 41, "min": 9947088, "mid": 12582182, "max": 15915341}, {"lo": 42, "hi": 43, "min": 12784882, "mid": 16171739, "max": 20455812}, {"lo": 44, "hi": 45, "min": 16432268, "mid": 20785358, "max": 26291629}, {"lo": 46, "hi": 47, "min": 21347838, "mid": 27003117, "max": 34156541}, {"lo": 48, "hi": 49, "min": 30681563, "mid": 38809449, "max": 49090501}, {"lo": 50, "hi": 51, "min": 45043286, "mid": 56975751, "max": 72069258}, {"lo": 52, "hi": 53, "min": 66127584, "mid": 83645513, "max": 105804135}, {"lo": 54, "hi": 54, "min": 92607942, "mid": 117140811, "max": 148172707}, {"lo": 55, "hi": 55, "min": 105165636, "mid": 133025176, "max": 168265017}, {"lo": 56, "hi": 56, "min": 119426160, "mid": 151063472, "max": 191081857}, {"lo": 57, "hi": 57, "min": 135620421, "mid": 171547771, "max": 216992673}, {"lo": 58, "hi": 58, "min": 154010633, "mid": 194809754, "max": 246417013}, {"lo": 59, "hi": 59, "min": 175803155, "mid": 229219270, "max": 298865363}, {"lo": 60, "hi": 60, "min": 200052811, "mid": 260836954, "max": 340089780}, {"lo": 61, "hi": 61, "min": 218185553, "mid": 284479156, "max": 370915440}, {"lo": 62, "hi": 62, "min": 241466221, "mid": 314833433, "max": 410492575}]}, "Peru": {"moneda": "PEN", "bandas": [{"lo": 40, "hi": 41, "min": 25453, "mid": 32195, "max": 40724}, {"lo": 42, "hi": 43, "min": 35507, "mid": 44914, "max": 56812}, {"lo": 44, "hi": 45, "min": 49534, "mid": 62656, "max": 79255}, {"lo": 46, "hi": 47, "min": 68574, "mid": 86741, "max": 109719}, {"lo": 48, "hi": 49, "min": 103079, "mid": 130385, "max": 164926}, {"lo": 50, "hi": 51, "min": 159701, "mid": 202007, "max": 255521}, {"lo": 52, "hi": 53, "min": 247426, "mid": 312972, "max": 395882}, {"lo": 54, "hi": 54, "min": 352599, "mid": 446007, "max": 564159}, {"lo": 55, "hi": 55, "min": 410800, "mid": 519626, "max": 657280}, {"lo": 56, "hi": 56, "min": 478608, "mid": 605396, "max": 765772}, {"lo": 57, "hi": 57, "min": 557607, "mid": 705324, "max": 892172}, {"lo": 58, "hi": 58, "min": 649647, "mid": 821746, "max": 1039435}, {"lo": 59, "hi": 59, "min": 754686, "mid": 983990, "max": 1282966}, {"lo": 60, "hi": 60, "min": 878516, "mid": 1145445, "max": 1493478}, {"lo": 61, "hi": 61, "min": 1009171, "mid": 1315799, "max": 1715591}, {"lo": 62, "hi": 62, "min": 1182003, "mid": 1541144, "max": 2009406}]}, "Colombia": {"moneda": "COP", "bandas": [{"lo": 40, "hi": 41, "min": 24587211, "mid": 31100635, "max": 39339537}, {"lo": 42, "hi": 43, "min": 33646837, "mid": 42560256, "max": 53834939}, {"lo": 44, "hi": 45, "min": 46044655, "mid": 58242393, "max": 73671448}, {"lo": 46, "hi": 47, "min": 63611824, "mid": 80463300, "max": 101778918}, {"lo": 48, "hi": 49, "min": 96017247, "mid": 121453278, "max": 153627595}, {"lo": 50, "hi": 51, "min": 147615472, "mid": 186720444, "max": 236184755}, {"lo": 52, "hi": 53, "min": 226941808, "mid": 287061203, "max": 363106892}, {"lo": 54, "hi": 54, "min": 307573937, "mid": 389053676, "max": 492118299}, {"lo": 55, "hi": 55, "min": 352233114, "mid": 445543562, "max": 563572982}, {"lo": 56, "hi": 56, "min": 403376722, "mid": 510235678, "max": 645402755}, {"lo": 57, "hi": 57, "min": 461946289, "mid": 584320972, "max": 739114063}, {"lo": 58, "hi": 58, "min": 529020051, "mid": 669163316, "max": 846432082}, {"lo": 59, "hi": 59, "min": 611377978, "mid": 797139357, "max": 1039342563}, {"lo": 60, "hi": 60, "min": 700308609, "mid": 913090714, "max": 1190524636}, {"lo": 61, "hi": 61, "min": 788171138, "mid": 1027649436, "max": 1339890935}, {"lo": 62, "hi": 62, "min": 900573032, "mid": 1174203575, "max": 1530974154}]}, "Mexico": {"moneda": "MXN", "bandas": [{"lo": 40, "hi": 41, "min": 158730, "mid": 200779, "max": 253967}, {"lo": 42, "hi": 43, "min": 208861, "mid": 264191, "max": 334178}, {"lo": 44, "hi": 45, "min": 274826, "mid": 347631, "max": 439722}, {"lo": 46, "hi": 47, "min": 355733, "mid": 449971, "max": 569173}, {"lo": 48, "hi": 49, "min": 501180, "mid": 633948, "max": 801888}, {"lo": 50, "hi": 51, "min": 734346, "mid": 928882, "max": 1174953}, {"lo": 52, "hi": 53, "min": 1075988, "mid": 1361029, "max": 1721581}, {"lo": 54, "hi": 54, "min": 1575262, "mid": 1992566, "max": 2520418}, {"lo": 55, "hi": 55, "min": 1851758, "mid": 2342309, "max": 2962813}, {"lo": 56, "hi": 56, "min": 2176786, "mid": 2753441, "max": 3482858}, {"lo": 57, "hi": 57, "min": 2558865, "mid": 3236736, "max": 4094183}, {"lo": 58, "hi": 58, "min": 3008007, "mid": 3804861, "max": 4812811}, {"lo": 59, "hi": 59, "min": 3575308, "mid": 4661632, "max": 6078024}, {"lo": 60, "hi": 60, "min": 4204825, "mid": 5482421, "max": 7148203}, {"lo": 61, "hi": 61, "min": 4616538, "mid": 6019229, "max": 7848114}, {"lo": 62, "hi": 62, "min": 5174186, "mid": 6746313, "max": 8796116}]}, "Argentina": {"moneda": "ARS", "bandas": [{"lo": 40, "hi": 41, "min": 15787831, "mid": 19970202, "max": 25260530}, {"lo": 42, "hi": 43, "min": 19353279, "mid": 24480177, "max": 30965247}, {"lo": 44, "hi": 45, "min": 23723931, "mid": 30008663, "max": 37958290}, {"lo": 46, "hi": 47, "min": 27994083, "mid": 35410025, "max": 44790533}, {"lo": 48, "hi": 49, "min": 37432722, "mid": 47349065, "max": 59892356}, {"lo": 50, "hi": 51, "min": 53835416, "mid": 68097013, "max": 86136666}, {"lo": 52, "hi": 53, "min": 77425628, "mid": 97936533, "max": 123881004}, {"lo": 54, "hi": 54, "min": 109961512, "mid": 139091533, "max": 175938419}, {"lo": 55, "hi": 55, "min": 125064190, "mid": 158195077, "max": 200102704}, {"lo": 56, "hi": 56, "min": 142241146, "mid": 179922400, "max": 227585834}, {"lo": 57, "hi": 57, "min": 161777275, "mid": 204633865, "max": 258843639}, {"lo": 58, "hi": 58, "min": 183996595, "mid": 232739328, "max": 294394551}, {"lo": 59, "hi": 59, "min": 210935674, "mid": 275026471, "max": 358590646}, {"lo": 60, "hi": 60, "min": 240052162, "mid": 312989727, "max": 408088676}, {"lo": 61, "hi": 61, "min": 260454416, "mid": 339591011, "max": 442772507}, {"lo": 62, "hi": 62, "min": 293912173, "mid": 383214589, "max": 499650695}]}, "Brasil": {"moneda": "BRL", "bandas": [{"lo": 40, "hi": 41, "min": 32237, "mid": 40777, "max": 51579}, {"lo": 42, "hi": 43, "min": 43083, "mid": 54496, "max": 68932}, {"lo": 44, "hi": 45, "min": 57577, "mid": 72830, "max": 92124}, {"lo": 46, "hi": 47, "min": 77082, "mid": 97502, "max": 123332}, {"lo": 48, "hi": 49, "min": 113585, "mid": 143675, "max": 181736}, {"lo": 50, "hi": 51, "min": 171941, "mid": 217490, "max": 275105}, {"lo": 52, "hi": 53, "min": 260277, "mid": 329227, "max": 416443}, {"lo": 54, "hi": 54, "min": 357238, "mid": 451874, "max": 571580}, {"lo": 55, "hi": 55, "min": 418285, "mid": 529093, "max": 669255}, {"lo": 56, "hi": 56, "min": 489764, "mid": 619507, "max": 783622}, {"lo": 57, "hi": 57, "min": 573457, "mid": 725372, "max": 917532}, {"lo": 58, "hi": 58, "min": 671453, "mid": 849328, "max": 1074325}, {"lo": 59, "hi": 59, "min": 797806, "mid": 1040212, "max": 1356271}, {"lo": 60, "hi": 60, "min": 932537, "mid": 1215879, "max": 1585312}, {"lo": 61, "hi": 61, "min": 1024057, "mid": 1335208, "max": 1740898}, {"lo": 62, "hi": 62, "min": 1170823, "mid": 1526567, "max": 1990399}]}, "Uruguay": {"moneda": "UYU", "bandas": [{"lo": 40, "hi": 41, "min": 726914, "mid": 919482, "max": 1163063}, {"lo": 42, "hi": 43, "min": 946584, "mid": 1197345, "max": 1514535}, {"lo": 44, "hi": 45, "min": 1232637, "mid": 1559177, "max": 1972220}, {"lo": 46, "hi": 47, "min": 1577135, "mid": 1994935, "max": 2523416}, {"lo": 48, "hi": 49, "min": 2181733, "mid": 2759699, "max": 3490773}, {"lo": 50, "hi": 51, "min": 3136507, "mid": 3967403, "max": 5018411}, {"lo": 52, "hi": 53, "min": 4509110, "mid": 5703623, "max": 7214576}, {"lo": 54, "hi": 54, "min": 5922190, "mid": 7491044, "max": 9475504}, {"lo": 55, "hi": 55, "min": 6748183, "mid": 8535852, "max": 10797093}, {"lo": 56, "hi": 56, "min": 7689382, "mid": 9726384, "max": 12303011}, {"lo": 57, "hi": 57, "min": 8761853, "mid": 11082965, "max": 14018965}, {"lo": 58, "hi": 58, "min": 9983906, "mid": 12628754, "max": 15974250}, {"lo": 59, "hi": 59, "min": 11135106, "mid": 14518402, "max": 18929680}, {"lo": 60, "hi": 60, "min": 12613978, "mid": 16446616, "max": 21443763}, {"lo": 61, "hi": 61, "min": 14289262, "mid": 18630919, "max": 24291746}, {"lo": 62, "hi": 62, "min": 16187044, "mid": 21105323, "max": 27517974}]}};</script>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{getFirestore,collection,addDoc,getDocs,setDoc,doc,query,orderBy,serverTimestamp}
+  from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const FC={apiKey:"AIzaSyB5jXXKnEqdcsL34ax3GpZw5BPnrPiDKL8",authDomain:"valuacion-de-cargos.firebaseapp.com",
+  projectId:"valuacion-de-cargos",storageBucket:"valuacion-de-cargos.firebasestorage.app",
+  messagingSenderId:"25652571699",appId:"1:25652571699:web:0755b7cdef446b17707d46"};
+const db=getFirestore(initializeApp(FC));
+window.FB={
+  async saveValuacion(d){return addDoc(collection(db,'valuaciones'),{...d,creadoEn:serverTimestamp()})},
+  async loadValuaciones(){const s=await getDocs(query(collection(db,'valuaciones'),orderBy('creadoEn','desc')));return s.docs.map(d=>({id:d.id,...d.data()}))},
+  async saveMapa(cs){return Promise.all(cs.map(c=>setDoc(doc(db,'mapa_cargos',(c.gerencia+'__'+c.cargo).replace(/[^a-zA-Z0-9_-]/g,'_').slice(0,490)),{...c,ts:serverTimestamp()})))},
+  async loadMapa(){const s=await getDocs(collection(db,'mapa_cargos'));return s.docs.map(d=>d.data())},
+  async saveAncla(a){return setDoc(doc(db,'config_mesa','ancla_'+Date.now()),{...a,creadoEn:serverTimestamp()})},
+  async loadConfig(){const s=await getDocs(collection(db,'config_mesa'));return s.docs.map(d=>d.data())}
+};
+window._fbReady=true;
+document.dispatchEvent(new CustomEvent('fb:ready'));
+console.log('[IPE] Firebase OK - valuacion-de-cargos');
+</script>
+<script>
+/* ================= DEFINICIONES METODOLOGÍA COMPLETA (manual eIPE 3.1) ================= */
+const DIMS = {
+  impacto:{factor:'imp',card:'d_impacto',label:'Naturaleza del impacto',req:'entero, sin medio punto',
+    levels:{1:'Entrega',2:'Operacional',3:'Táctico',4:'Estratégico',5:'Visionario'},allowed:[1,2,3,4,5],
+    defs:{1:'<b>Entrega:</b> rol definido acorde a estándares de servicio y metas operativas; asegura la entrega de su propio trabajo. Área de impacto: su área de trabajo.',
+      2:'<b>Operacional:</b> trabaja para alcanzar objetivos operativos o estándares de servicio; soporta la implementación de planes con metas predeterminadas.',
+      3:'<b>Táctico:</b> define cómo se implementa la estrategia; especifica nuevos productos, procesos o estándares para una función o unidad de negocio completa (típico: gerencias de función). ⚠ Es la palanca más grande del modelo (+2 a 3 grados vs. nivel 2): gestionar o mejorar la operación de un área —aunque sea grande— es Impacto 2 con Contribución alta, no 3.',
+      4:'<b>Estratégico:</b> establece e implementa estrategias de negocio de largo plazo (4–5 años) basadas en la visión. Área: nivel organizacional.',
+      5:'<b>Visionario:</b> dirige la organización para desarrollar y alcanzar misión, visión y valores. Nivel corporativo.'}},
+  contribucion:{factor:'imp',card:'d_contribucion',label:'Contribución',req:'½ permitido · se evalúa dentro del nivel de impacto elegido',
+    levels:{1:'Limitada',2:'Alguna',3:'Directa',4:'Significativa',5:'Mayor'},allowed:[1,1.5,2,2.5,3,3.5,4,4.5,5],
+    defs:{1:'<b>Limitada:</b> difícil de identificar la contribución al logro de los resultados (&lt;10% del ámbito).',
+      2:'<b>Alguna:</b> contribución discernible que lleva indirectamente al logro de resultados (10–15%). Propone.',
+      3:'<b>Directa:</b> influye directa y claramente en el curso de acción que determina resultados (15–20%). Decide con otros.',
+      4:'<b>Significativa:</b> contribución muy marcada, con autoridad definida en un área relevante (20–30%).',
+      5:'<b>Mayor:</b> autoridad predominante en la determinación de resultados clave (&gt;30%). Decide independientemente.'}},
+  comunicacion:{factor:'com',card:'d_comunicacion',label:'Naturaleza de la comunicación',req:'½ por frecuencia (manual oficial): −½ si es ocasional · +½ si es muy frecuente',
+    levels:{1:'Transmitir',2:'Adaptar e intercambiar',3:'Influenciar',4:'Negociar',5:'Negociar estratégicamente'},allowed:[1,1.5,2,2.5,3,3.5,4,4.5,5],
+    defs:{1:'<b>Transmitir:</b> comunica mediante instrucciones, sugerencias o presentaciones. Output: conocimiento de la información.',
+      2:'<b>Adaptar e intercambiar:</b> logra acuerdos mediante flexibilidad y concesión. Output: comprensión de hechos, prácticas, políticas.',
+      3:'<b>Influenciar:</b> efectúa cambios sin dar órdenes directas. Output: aceptación de conceptos y prácticas.',
+      4:'<b>Negociar:</b> llega a convenios mediante discusiones y compromisos. Output: aprobación total de propuestas.',
+      5:'<b>Negociar estratégicamente:</b> dirige comunicaciones de gran importancia con implicaciones de largo plazo. Output: acuerdos estratégicos.'}},
+  marco:{factor:'com',card:'d_marco',label:'Marco de referencia (contexto de esa comunicación)',req:'½ permitido · la divergencia pesa más que la externalidad',
+    levels:{1:'Intereses internos compartidos',2:'Intereses externos compartidos',3:'Intereses internos divergentes',4:'Intereses externos divergentes'},allowed:[1,1.5,2,2.5,3,3.5,4],
+    defs:{1:'<b>Internos compartidos:</b> deseo común de alcanzar una solución dentro de la organización.',
+      2:'<b>Externos compartidos:</b> deseo común de alcanzar una solución con partes fuera de la organización (ej.: proveedor que quiere cerrar acuerdo).',
+      3:'<b>Internos divergentes:</b> objetivos en conflicto que dificultan lograr una solución dentro de la organización (ej.: alinear gerencias con prioridades opuestas).',
+      4:'<b>Externos divergentes:</b> objetivos en conflicto con partes externas; la comunicación más exigente del modelo.'}},
+  innovacion:{factor:'inn',card:'d_innovacion',label:'Nivel de innovación',req:'½ permitido · niveles 5–6 solo para creación genuina de conceptos',
+    levels:{1:'Seguir',2:'Chequear',3:'Modificar',4:'Mejorar',5:'Crear / conceptualizar',6:'Avance científico'},allowed:[1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6],mesaBlock:[5,5.5,6],
+    defs:{1:'<b>Seguir:</b> compara con la fuente u original; no se esperan cambios.',
+      2:'<b>Chequear:</b> efectúa cambios menores sobre lo existente.',
+      3:'<b>Modificar:</b> adapta o mejora métodos existentes; mejoras desde el día a día.',
+      4:'<b>Mejorar:</b> cambios significativos en procesos, sistemas o productos existentes.',
+      5:'<b>Crear/conceptualizar:</b> verdadero desarrollo de nuevos conceptos o métodos, desde una idea abstracta.',
+      6:'<b>Avance científico:</b> avance inesperado y revolucionario en conocimientos o técnicas.'}},
+  complejidad:{factor:'inn',card:'d_complejidad',label:'Complejidad',req:'½ permitido',
+    levels:{1:'Definida',2:'Difícil',3:'Compleja',4:'Multidimensional'},allowed:[1,1.5,2,2.5,3,3.5,4],
+    defs:{1:'<b>Definida:</b> problemas y asuntos claramente definidos.',
+      2:'<b>Difícil:</b> problemas vagamente definidos; hay que estructurarlos.',
+      3:'<b>Compleja:</b> soluciones completas en dos de tres dimensiones (operativa, financiera, humana).',
+      4:'<b>Multidimensional:</b> las tres dimensiones requieren soluciones de principio a fin.'}},
+  conocimiento:{factor:'con',card:'d_conocimiento',label:'Profundidad del conocimiento',req:'½ permitido · el mínimo requerido por el puesto, no el del titular',
+    levels:{1:'Limitado del puesto',2:'Básico del puesto',3:'Amplio del puesto',4:'Experto',5:'Profesional reconocido',6:'Especialista funcional / generalista org.',7:'Preeminencia funcional',8:'Amplia y profunda experiencia'},
+    allowed:[1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8],
+    defs:{1:'<b>Limitado:</b> rutinas y estándares básicos, para operar dentro de límites estrechos.',
+      2:'<b>Básico:</b> conocimiento especializado de un área de trabajo específica.',
+      3:'<b>Amplio:</b> teoría y principios de una disciplina profesional, o conocimiento avanzado de una práctica técnica específica. Típico profesional universitario.',
+      4:'<b>Experto:</b> habilidades avanzadas de una disciplina integrando teoría con prácticas y precedentes de la organización.',
+      5:'<b>Profesional reconocido:</b> maestría de una disciplina combinando teoría profunda y prácticas organizacionales, o experiencia a través de varias disciplinas de una función.',
+      6:'<b>Especialista funcional / generalista organizacional:</b> el experto de la organización en una disciplina, o experiencia gerencial en varias áreas funcionales.',
+      7:'<b>Preeminencia funcional:</b> reconocido fuera de la organización; el experto corporativo en la industria.',
+      8:'<b>Amplia y profunda experiencia:</b> experiencia gerencial muy significativa en varios negocios y funciones principales. Solo como gerente de equipos.'}},
+  equipos:{factor:'con',card:'d_equipos',label:'Equipos (cómo se aplica el conocimiento)',req:'½ permitido',
+    levels:{1:'Miembro de equipo',2:'Líder de equipo',3:'Gerente de equipos'},allowed:[1,1.5,2,2.5,3],
+    defs:{1:'<b>Miembro de equipo:</b> contribuidor individual, sin responsabilidad directa de dirigir a otros.',
+      2:'<b>Líder de equipo:</b> coordina a los miembros del equipo (al menos 3); dirige, programa, asigna y monitorea el trabajo.',
+      3:'<b>Gerente de equipos:</b> dirige a más de un líder de equipo; determina la estructura y los roles.'}},
+  amplitud:{factor:'con',card:'d_amplitud',label:'Amplitud (contexto geográfico)',req:'½ permitido',
+    levels:{1:'Local',2:'Regional',3:'Global'},allowed:[1,1.5,2,2.5,3],mesaBlock:[2.5,3],
+    defs:{1:'<b>Local:</b> un país o países vecinos con cultura similar.',
+      2:'<b>Regional:</b> región continental (ej.: Latinoamérica).',
+      3:'<b>Global:</b> todas las regiones del mundo.'}}
+};
+const FACTORS={imp:{name:'Impacto',hex:'#0E6E6B',teor:56.6},com:{name:'Comunicación',hex:'#B4652B',teor:9.2},inn:{name:'Innovación',hex:'#6B4FA3',teor:10.4},con:{name:'Conocimiento',hex:'#2E6B3E',teor:20.9},rie:{name:'Riesgo',hex:'#7A8791',teor:2.8}};
+function careerBand(g){
+  if(g==null)return'';
+  if(g<=41)return'Soporte / Para-profesional';
+  if(g<=45)return'Profesional · entrada–experimentado';
+  if(g<=49)return'Profesional Sr. / Supervisor / Jefatura inicial';
+  if(g<=53)return'Jefatura / Manager / Especialista';
+  if(g<=56)return'Subgerencia / Senior Manager / Experto';
+  if(g<=59)return'Gerencia / Director de subfunción';
+  if(g<=62)return'Gerencia de función / Dirección';
+  return'Alta dirección / Ejecutivo';
+}
+
+/* ================= MOTOR (idéntico al validado: 212 pts → IPE 47) ================= */
+function lut(t){const h=t[0].slice(1);const d={};for(const r of t.slice(1)){if(r[0]==null)continue;const m={};h.forEach((k,i)=>{if(k!=null&&r[i+1]!=null)m[Number(k).toFixed(1)]=r[i+1]});d[Number(r[0]).toFixed(1)]=m}return d}
+const IMPACT=lut(TABLES.impact_combo),SIZE=lut(TABLES.size),COMM=lut(TABLES.comm),INNOV=lut(TABLES.innov);
+const KNOW={'1.0':lut(TABLES.know_1),'1.5':lut(TABLES.know_1_5),'2.0':lut(TABLES.know_2),'2.5':lut(TABLES.know_2_5),'3.0':lut(TABLES.know_3)};
+const GRADE=TABLES.grade;
+let paisBanda='Chile';
+const fmt=(v,mon)=>new Intl.NumberFormat('es-CL',{notation:'compact',maximumFractionDigits:1}).format(v)+' '+mon;
+const fmtFull=(v,mon)=>new Intl.NumberFormat('es-CL').format(Math.round(v))+' '+mon;
+function bandaDe(ipe,pais){const p=BANDAS[pais||paisBanda];if(!p)return null;const b=p.bandas.find(b=>ipe>=b.lo&&ipe<=b.hi);return b?{...b,moneda:p.moneda}:null}
+const RISK={0:{1:0,2:0,3:0},1:{1:5,2:10,3:15},2:{1:15,2:20,3:25},3:{1:25,2:30,3:35}}; // Manual oficial IPE 3.1
+const k=v=>Number(v).toFixed(1);
+const rnd=x=>Math.round(x);
+function engine(s){
+  try{
+    const comb=IMPACT[k(s.impacto)][k(s.contribucion)];
+    const pImp=rnd(SIZE[k(comb)][k(s.tamano)]);
+    const pCom=rnd(COMM[k(s.comunicacion)][k(s.marco)]);
+    const pInn=rnd(INNOV[k(s.innovacion)][k(s.complejidad)]);
+    const pCon=rnd(KNOW[k(s.equipos)][k(s.conocimiento)][k(s.amplitud)]);
+    const pRie=s.usarRiesgo?RISK[s.riesgo][s.entorno]:0;
+    const total=pImp+pCom+pInn+pCon+pRie;
+    const g=GRADE.find(r=>total>=r[0]&&total<=r[1]);
+    return{comb,pImp,pCom,pInn,pCon,pRie,total,ipe:g?g[2]:null,lo:g?g[0]:null,hi:g?g[1]:null};
+  }catch(e){return null}
+}
+
+/* ================= ESTADO / NAVEGACIÓN ================= */
+const state={impacto:null,contribucion:null,comunicacion:null,marco:null,innovacion:null,complejidad:null,conocimiento:null,equipos:null,amplitud:null,tamano:10,riesgo:0,entorno:1,usarRiesgo:false};
+const just={};
+let mapData=[];      // [{gerencia,cargo,rol,ipe,n}]
+let sesiones=[];     // valuaciones guardadas en sesión
+let mapChart=null,histChart=null,radarChart=null;
+const $=id=>document.getElementById(id);
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');$(b.dataset.page).classList.add('on');
+  if(b.dataset.page==='pgComp'&&typeof renderComparador==='function')setTimeout(renderComparador,80);
+  if(b.dataset.page==='pgMap'){var t=document.getElementById('mapViewTabs');if(t&&(mapData.length||sesiones.length))t.style.display='block';}
+  if(b.dataset.page==='pgVal'&&document.getElementById('tabSet')&&document.getElementById('tabSet').classList.contains('on')&&typeof renderSetPanel==='function')renderSetPanel();
+}));
+
+/* ================= RENDER DIMENSIONES ================= */
+function blockedNow(dim,v){return $('mesa').checked&&(DIMS[dim].mesaBlock||[]).includes(v)}
+function renderDim(key){
+  const d=DIMS[key],el=$(d.card);
+  const chips=d.allowed.map(v=>{
+    const name=d.levels[v]?` <span class="cname">${d.levels[v]}</span>`:'';
+    const blk=blockedNow(key,v);
+    return `<button class="chip${state[key]===v?' on':''}${blk?' blocked':''}" data-dim="${key}" data-v="${v}" ${blk?'disabled title="Bloqueado por reglas de mesa JM"':''}>${v}${name}</button>`;
+  }).join('');
+  el.innerHTML=`<div class="dlabel">${d.label} <span class="req">· ${d.req}</span><span class="conf" id="conf_${key}" style="display:none"></span></div>
+    <div class="chips">${chips}</div><div class="def" id="def_${key}"></div>
+    <div class="just" id="jw_${key}"><div class="jlab">Justificación</div><textarea id="just_${key}" placeholder="Por qué este nivel (editable)"></textarea></div>`;
+  if(just[key]){$('just_'+key).value=just[key];$('jw_'+key).classList.add('show')}
+}
+Object.keys(DIMS).forEach(renderDim);
+/* --- Factor Riesgo opcional --- */
+const RIE_LVL={0:'Normal (condiciones estándar)',1:'Mental (estrés/presión continua que puede afectar la salud)',2:'Daño / lesión (requiere alta atención y precaución)',3:'Discapacidad (riesgo de discapacidad física o muerte)'};
+const ENT_LVL={1:'Baja exposición',2:'Moderada exposición',3:'Alta exposición'};
+function renderRiesgo(){
+  const on=state.usarRiesgo;
+  $('d_riesgo').innerHTML=`<label class="toggle" style="margin-bottom:10px"><input type="checkbox" id="chkRie" ${on?'checked':''}> Aplicar factor Riesgo (manual oficial: solo cuando el riesgo físico/mental es una posibilidad cierta; en condiciones normales no se requiere)</label>
+  ${on?`<div class="dlabel">Nivel de riesgo</div><div class="chips">${[0,1,2,3].map(v=>`<button class="chip${state.riesgo===v?' on':''}" data-rie="${v}">${v} <span class="cname">${RIE_LVL[v].split(' (')[0]}</span></button>`).join('')}</div>
+  <div class="def show" style="margin-bottom:8px">${RIE_LVL[state.riesgo]}</div>
+  <div class="dlabel">Entorno (exposición)</div><div class="chips">${[1,2,3].map(v=>`<button class="chip${state.entorno===v?' on':''}" data-ent="${v}">${v} <span class="cname">${ENT_LVL[v]}</span></button>`).join('')}</div>`:''}`;
+  const el=document.getElementById('chkRie');
+  if(el)el.addEventListener('change',()=>{state.usarRiesgo=el.checked;renderRiesgo();
+const psel=$('paisSel');
+psel.innerHTML=Object.keys(BANDAS).map(p=>`<option ${p==='Chile'?'selected':''}>${p}</option>`).join('');
+psel.addEventListener('change',()=>{paisBanda=psel.value;recalc()});recalc()});
+}
+document.addEventListener('click',e=>{
+  const r=e.target.closest('[data-rie]');if(r){state.riesgo=parseInt(r.dataset.rie);renderRiesgo();recalc();return}
+  const n=e.target.closest('[data-ent]');if(n){state.entorno=parseInt(n.dataset.ent);renderRiesgo();recalc()}
+});
+renderRiesgo();
+$('mesa').addEventListener('change',()=>{
+  Object.keys(DIMS).forEach(dim=>{
+    if($('mesa').checked&&(DIMS[dim].mesaBlock||[]).includes(state[dim]))state[dim]=null;
+    renderDim(dim);
+  });$('rentaAct')&&$('rentaAct').addEventListener('input',()=>{const r=engine(state);if(r&&r.ipe)compa(r)});
+recalc();
+});
+
+document.addEventListener('click',e=>{
+  const c=e.target.closest('.chip');if(!c||c.disabled)return;
+  const dim=c.dataset.dim,v=parseFloat(c.dataset.v);
+  state[dim]=v;renderDim(dim);
+  const def=$('def_'+dim);
+  const lo=DIMS[dim].defs[Math.floor(v)]||'',hi=v%1?(DIMS[dim].defs[Math.ceil(v)]||''):'';
+  def.innerHTML=v%1?`${lo}<br><span style="opacity:.75">Medio punto hacia:</span> ${hi}`:lo;
+  def.classList.add('show');recalc();
+});
+document.addEventListener('input',e=>{if(e.target.id&&e.target.id.startsWith('just_'))just[e.target.id.slice(5)]=e.target.value});
+
+/* ================= RECÁLCULO + ESCALERA ================= */
+function safe(f){try{const v=f();return isNaN(v)?null:v}catch(e){return null}}
+function ladderHTML(cur){
+  const c=cur||48;let h='';
+  for(let g=Math.min(87,c+5);g>=Math.max(40,c-5);g--){
+    const band=GRADE.find(r=>r[2]===g);
+    h+=`<div class="lrow${g===cur?' cur':''}"><span class="g">${g}</span><span class="rng">${band?band[0]+'–'+band[1]:''}</span><span class="cb">${careerBand(g)}</span></div>`;
+  }return h;
+}
+function recalc(){
+  const missing=Object.keys(DIMS).filter(d=>state[d]==null);
+  const pi=safe(()=>rnd(SIZE[k(IMPACT[k(state.impacto)][k(state.contribucion)])][k(state.tamano)]));
+  const pc=safe(()=>rnd(COMM[k(state.comunicacion)][k(state.marco)]));
+  const pn=safe(()=>rnd(INNOV[k(state.innovacion)][k(state.complejidad)]));
+  const pk=safe(()=>rnd(KNOW[k(state.equipos)][k(state.conocimiento)][k(state.amplitud)]));
+  $('p_imp').textContent=pi!=null?pi+' pts':'— pts';$('p_com').textContent=pc!=null?pc+' pts':'— pts';
+  $('p_inn').textContent=pn!=null?pn+' pts':'— pts';$('p_con').textContent=pk!=null?pk+' pts':'— pts';
+  const pr=state.usarRiesgo?RISK[state.riesgo][state.entorno]:null;
+  $('p_rie').textContent=state.usarRiesgo?(pr+' pts'):'no aplicado';
+  const parts=[['imp',pi],['com',pc],['inn',pn],['con',pk],...(state.usarRiesgo?[['rie',pr]]:[])].filter(p=>p[1]!=null);
+  const tot=parts.reduce((a,p)=>a+p[1],0);
+  $('fbar').innerHTML=parts.map(p=>`<div style="width:${tot?100*p[1]/tot:0}%;background:${FACTORS[p[0]].hex}"></div>`).join('');
+  const r=missing.length?null:engine(state);
+  if(r){
+    $('gradeBig').innerHTML=`${r.ipe}<small>GRADO IPE</small>`;
+    $('cband').textContent=careerBand(r.ipe);
+    $('totalPts').textContent=`${r.total} puntos · banda ${r.lo}–${r.hi}`;
+    $('ladder').innerHTML=ladderHTML(r.ipe);
+    $('edgeInfo').innerHTML=`▲ a IPE ${r.ipe+1}: faltan <b>${r.hi-r.total+1}</b> pts · ▼ a IPE ${r.ipe-1}: sobran <b>${r.total-r.lo+1}</b> pts`;
+    const b=bandaDe(r.ipe);
+    if(b){$('bandBox').style.display='block';
+      $('bandVals').innerHTML=`Mín <b>${fmt(b.min,b.moneda)}</b> · Mid <b style="color:#F4B63F">${fmt(b.mid,b.moneda)}</b> · Máx <b>${fmt(b.max,b.moneda)}</b><br><span style="color:#8AA0B0;font-size:11px">anual · ≈ mensual: ${fmt(b.min/12,'')}– <b>${fmt(b.mid/12,'')}</b> –${fmt(b.max/12,b.moneda)}</span>`;
+    }else{$('bandBox').style.display=r.ipe>62?'block':'none';if(r.ipe>62)$('bandVals').innerHTML='<span style="color:#8AA0B0">Grado fuera del rango de bandas 2026 (40–62)</span>'}
+    renderInsights(r);
+  }else{
+    $('gradeBig').innerHTML=`—<small>GRADO IPE</small>`;$('cband').textContent='';
+    $('totalPts').textContent=tot?`${tot} pts parciales · faltan: ${missing.map(m=>DIMS[m].label.split(' ')[0]).join(', ')}`:'0 puntos · faltan factores por valuar';
+    $('ladder').innerHTML=ladderHTML(null);$('edgeInfo').textContent='';
+    $('insightsCard').style.display='none';
+  }
+}
+
+/* ================= INSIGHTS ================= */
+function renderInsights(r){
+  $('insightsCard').style.display='block';
+  let warn='';
+  if(state.impacto>=3&&(state.equipos<=2||state.conocimiento<4))warn='⚠ <b>Alerta de calibración:</b> Impacto 3 (Táctico) con Equipos ≤2 o Conocimiento &lt;4 es un patrón atípico: Táctico implica definir procesos/estándares de una función completa. Verifica si corresponde Impacto 2 con Contribución alta (la sensibilidad de abajo te muestra el efecto).';
+  else if(state.impacto>=3&&careerBand(r.ipe).indexOf('Gerencia')<0&&careerBand(r.ipe).indexOf('dirección')<0)warn='⚠ <b>Revisar Impacto:</b> el grado resultante no es de banda gerencial pero la naturaleza elegida es Táctica. Confirma que el puesto define (no solo gestiona) procesos o estándares de función/UN.';
+  const w=document.getElementById('calWarn')||(function(){const d=document.createElement('div');d.id='calWarn';d.className='qs';document.getElementById('insightsCard').insertBefore(d,document.getElementById('insightsCard').children[1]);return d})();
+  w.innerHTML=warn;w.style.display=warn?'block':'none';
+  const mix=[100*r.pImp/r.total,100*r.pCom/r.total,100*r.pInn/r.total,100*r.pCon/r.total];
+  const teor=Object.values(FACTORS).map(f=>f.teor);
+  if(radarChart)radarChart.destroy();
+  radarChart=new Chart($('radarChart'),{type:'radar',data:{labels:['Impacto','Comunicación','Innovación','Conocimiento'],
+    datasets:[{label:'Este cargo (%)',data:mix,backgroundColor:'rgba(244,182,63,.25)',borderColor:'#C98F1B',pointBackgroundColor:'#C98F1B'},
+      {label:'Peso teórico del modelo (%)',data:teor,backgroundColor:'rgba(15,27,36,.08)',borderColor:'#0F1B24',borderDash:[5,4],pointBackgroundColor:'#0F1B24'}]},
+    options:{maintainAspectRatio:false,plugins:{legend:{labels:{font:{size:11}}}},scales:{r:{beginAtZero:true,ticks:{display:false}}}}});
+  let sens='<tr><th>Dimensión</th><th>Movimiento</th><th>Nuevo total</th><th>Nuevo IPE</th></tr>';
+  for(const dim of Object.keys(DIMS)){for(const step of[0.5,-0.5]){
+    const nv=+(state[dim]+step).toFixed(1);const d=DIMS[dim];
+    if(!d.allowed.includes(nv)||blockedNow(dim,nv))continue;
+    const r2=engine({...state,[dim]:nv});if(!r2||r2.ipe===r.ipe)continue;
+    sens+=`<tr><td>${d.label}</td><td class="mono">${state[dim]} → ${nv}</td><td class="mono">${r2.total}</td><td class="mono ${r2.ipe>r.ipe?'up':'dn'}">IPE ${r2.ipe} ${r2.ipe>r.ipe?'▲':'▼'}</td></tr>`;
+  }}
+  if(sens.split('<tr>').length===2)sens+='<tr><td colspan="4">Valuación estable: ningún movimiento de ±½ nivel cambia el grado. Posición sólida para mesa.</td></tr>';
+  $('sensTable').innerHTML=sens;
+  renderMapControl(r);
+  renderBandas(r);
+}
+let bandChart=null;
+function renderBandas(r){
+  const cur=bandaDe(r.ipe);
+  const cost=$('gradeCost');
+  if(!cur){if(bandChart){bandChart.destroy();bandChart=null}cost.textContent='Grado fuera del rango de bandas 2026 (IPE 40–62).';$('compaBox').textContent='';return}
+  const vecinos=[r.ipe-1,r.ipe,r.ipe+1].map(g=>({g,b:bandaDe(g)})).filter(x=>x.b);
+  if(bandChart)bandChart.destroy();
+  bandChart=new Chart($('bandChart'),{type:'bar',data:{labels:vecinos.map(x=>'IPE '+x.g),
+    datasets:[{label:'Banda (mín–máx)',data:vecinos.map(x=>[x.b.min,x.b.max]),
+      backgroundColor:vecinos.map(x=>x.g===r.ipe?'rgba(244,182,63,.75)':'rgba(14,110,107,.35)'),
+      borderColor:vecinos.map(x=>x.g===r.ipe?'#9A6E12':'#0E6E6B'),borderWidth:1.5,borderSkipped:false}]},
+    options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:c=>{const b=vecinos[c.dataIndex].b;return `mín ${fmt(b.min,b.moneda)} · mid ${fmt(b.mid,b.moneda)} · máx ${fmt(b.max,b.moneda)}`}}}},
+      scales:{x:{ticks:{callback:v=>fmt(v,'')}}}}});
+  const next=bandaDe(r.ipe+1),prev=bandaDe(r.ipe-1);
+  let t=`Midpoint del grado: <b>${fmtFull(cur.mid,cur.moneda)}</b> anual.`;
+  if(next)t+=`<br>Subir a IPE ${r.ipe+1} implica <b>+${fmt(next.mid-cur.mid,cur.moneda)}</b> de midpoint (+${(100*(next.mid-cur.mid)/cur.mid).toFixed(1)}%).`;
+  if(prev)t+=`<br>Bajar a IPE ${r.ipe-1}: <b>−${fmt(cur.mid-prev.mid,cur.moneda)}</b> (−${(100*(cur.mid-prev.mid)/cur.mid).toFixed(1)}%).`;
+  t+=`<br><span style="font-size:11.5px">Este es el costo real de la discusión de mesa: cada medio nivel que mueve el grado, mueve esto.</span>`;
+  cost.innerHTML=t;
+  compa(r);
+}
+function compa(r){
+  const cur=bandaDe(r.ipe);const raw=($('rentaAct').value||'').replace(/[^0-9]/g,'');
+  const box=$('compaBox');
+  if(!cur||!raw){box.textContent='';return}
+  const v=parseInt(raw);
+  const cr=v/cur.mid;
+  const pos=(v-cur.min)/(cur.max-cur.min);
+  let msg=`Compa-ratio: <b>${cr.toFixed(2)}</b> · posición en banda: <b>${(100*pos).toFixed(0)}%</b>. `;
+  if(v<cur.min)msg+='⚠ Bajo el mínimo de la banda: caso de ajuste.';
+  else if(v>cur.max)msg+='⚠ Sobre el máximo: renta congelable o revisar valuación.';
+  else if(cr<0.85)msg+='Zona baja de banda: espacio de crecimiento.';
+  else if(cr>1.15)msg+='Zona alta de banda: crecimiento limitado.';
+  else msg+='Posicionamiento saludable en torno al midpoint.';
+  box.innerHTML=msg;
+}
+function renderMapControl(r){
+  const ger=($('gerCargo').value||'').trim();
+  if(!mapData.length){$('mapCtl').innerHTML='Carga el mapa de cargos (pestaña Mapa) para situar esta valuación contra los IPE vigentes de la misma gerencia.';return}
+  const pool=ger?mapData.filter(x=>x.gerencia.toLowerCase()===ger.toLowerCase()):mapData;
+  if(!pool.length){$('mapCtl').innerHTML=`No hay cargos cargados en la gerencia "${ger}". Se comparará contra toda la base al guardar.`;return}
+  const grades=pool.map(x=>x.ipe).sort((a,b)=>a-b);
+  const min=grades[0],max=grades[grades.length-1],med=grades[Math.floor(grades.length/2)];
+  const iguales=pool.filter(x=>x.ipe===r.ipe).length;
+  const alerta=r.ipe>max?`⚠ Quedaría <b>sobre el máximo vigente (${max})</b> de la gerencia: prepara la justificación de mesa.`:(r.ipe<min?`⚠ Quedaría <b>bajo el mínimo vigente (${min})</b>: revisa si la descripción subestima el cargo.`:`✓ Dentro del rango vigente de la gerencia.`);
+  $('mapCtl').innerHTML=`<b>${ger||'Toda la base'}</b> · ${pool.length} cargos vigentes<br>
+    Rango IPE: <span style="font-family:var(--mono)"><b>${min}–${max}</b></span> · mediana <b>${med}</b> · en el grado ${r.ipe}: <b>${iguales}</b> cargo(s)<br>${alerta}`;
+}
+
+/* ================= MAPA DE CARGOS ================= */
+const drop=$('drop');
+drop.addEventListener('click',()=>$('fileInp').click());
+drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('hover')});
+drop.addEventListener('dragleave',()=>drop.classList.remove('hover'));
+drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('hover');if(e.dataTransfer.files[0])readFile(e.dataTransfer.files[0])});
+$('fileInp').addEventListener('change',e=>{if(e.target.files[0])readFile(e.target.files[0])});
+function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim()}
+function readFile(f){
+  $('mapErr').style.display='none';
+  const rd=new FileReader();
+  rd.onload=e=>{try{
+    const wb=XLSX.read(e.target.result,{type:'array'});
+    const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''});
+    if(!rows.length)throw new Error('la primera hoja no tiene datos');
+    const keys=Object.keys(rows[0]);
+    const find=cands=>keys.find(h=>cands.some(c=>norm(h).includes(c)));
+    const cGer=find(['gerencia','area','direccion','unidad']),cCar=find(['cargo','puesto','posicion','rol del cargo','titulo']),
+          cIpe=find(['ipe','grado','grade','class','pc']),cRol=find(['rol','subfuncion','familia','funcion']),cN=find(['dotacion','headcount','hc','n°','cantidad','n ']);
+    if(!cCar||!cIpe)throw new Error('no encontré columnas de Cargo e IPE. Encabezados leídos: '+keys.join(', '));
+    mapData=rows.map(x=>({gerencia:String(x[cGer]||'Sin gerencia').trim()||'Sin gerencia',cargo:String(x[cCar]).trim(),
+      rol:cRol?String(x[cRol]).trim():'',ipe:parseFloat(x[cIpe]),n:cN?(parseInt(x[cN])||1):1}))
+      .filter(x=>x.cargo&&!isNaN(x.ipe)&&x.ipe>=30&&x.ipe<=90);
+    if(!mapData.length)throw new Error('ninguna fila tiene IPE numérico válido (30–90)');
+    $('mapOk').textContent=`Mapa cargado: ${mapData.length} cargos válidos en ${new Set(mapData.map(x=>x.gerencia)).size} gerencias.`;
+    $('mapOk').style.display='block';
+    $('gerList').innerHTML=[...new Set(mapData.map(x=>x.gerencia))].map(g=>`<option value="${g}">`).join('');
+    renderMap();
+    if(window._fbReady){window.FB.saveMapa(mapData).then(()=>{$('mapOk').textContent+=' · sync Firebase';}).catch(e=>console.warn(e));}
+  }catch(err){$('mapErr').textContent='No pude leer el archivo: '+err.message;$('mapErr').style.display='block'}};
+  rd.readAsArrayBuffer(f);
+}
+function renderMap(){
+  if(!mapData.length&&!sesiones.length)return;
+  const gers=[...new Set([...mapData.map(x=>x.gerencia),...sesiones.map(s=>s.gerencia)])].sort();
+  const gi=Object.fromEntries(gers.map((g,i)=>[g,i]));
+  // KPIs
+  const grades=mapData.map(x=>x.ipe);
+  $('kpis').style.display='grid';
+  const masa=mapData.reduce((acc,x)=>{const b=bandaDe(Math.round(x.ipe),'Chile');return acc+(b?b.mid*x.n:0)},0);
+  $('kpis').innerHTML=[['Cargos',mapData.length],['Gerencias',gers.length],
+    ['Rango IPE',grades.length?Math.min(...grades)+'–'+Math.max(...grades):'—'],
+    ['Dotación',mapData.reduce((a,x)=>a+x.n,0)],['Masa teórica (mid P60)',masa?fmt(masa,'CLP'):'—'],['Valuados en sesión',sesiones.length]]
+    .map(x=>`<div class="kpi"><div class="kv">${x[1]}</div><div class="kl">${x[0]}</div></div>`).join('');
+  // Scatter
+  $('scatterCard').style.display='block';
+  const jit=()=> (Math.random()-.5)*.5;
+  const dBase={label:'Cargos vigentes',data:mapData.map(x=>({x:x.ipe,y:gi[x.gerencia]+jit(),r:Math.min(16,4+2*Math.sqrt(x.n)),c:x})),
+    backgroundColor:'rgba(14,110,107,.5)',borderColor:'#0E6E6B'};
+  const dSes={label:'Valuadas en sesión',data:sesiones.map(s=>({x:s.ipe,y:gi[s.gerencia]??0,r:9,c:s})),
+    backgroundColor:'#F4B63F',borderColor:'#9A6E12',pointStyle:'rectRot'};
+  if(mapChart)mapChart.destroy();
+  mapChart=new Chart($('mapChart'),{type:'bubble',data:{datasets:[dBase,dSes]},options:{maintainAspectRatio:false,
+    scales:{x:{title:{display:true,text:'Grado IPE'},ticks:{stepSize:1},grid:{color:'#E6EBEF'}},
+      y:{min:-.7,max:gers.length-.3,ticks:{callback:v=>gers[Math.round(v)]??'',stepSize:1,autoSkip:false,font:{size:11}},grid:{color:'#EFF3F5'}}},
+    plugins:{legend:{labels:{usePointStyle:true}},tooltip:{callbacks:{label:ctx=>{const c=ctx.raw.c;return `${c.cargo} · IPE ${c.ipe}${c.n>1?' · dotación '+c.n:''}${c.session?' · valuada en sesión':''}`}}}}}});
+  // Histograma
+  $('histCard').style.display='block';
+  const hmin=Math.min(...grades,...sesiones.map(s=>s.ipe)),hmax=Math.max(...grades,...sesiones.map(s=>s.ipe));
+  const labels=[],base=[],ses=[];
+  for(let g=hmin;g<=hmax;g++){labels.push(g);base.push(mapData.filter(x=>x.ipe===g).length);ses.push(sesiones.filter(s=>s.ipe===g).length)}
+  if(histChart)histChart.destroy();
+  histChart=new Chart($('histChart'),{type:'bar',data:{labels,datasets:[
+    {label:'Vigentes',data:base,backgroundColor:'#0E6E6B'},{label:'Sesión',data:ses,backgroundColor:'#F4B63F'}]},
+    options:{maintainAspectRatio:false,scales:{x:{stacked:true,title:{display:true,text:'Grado IPE'}},y:{stacked:true,ticks:{precision:0}}},plugins:{legend:{labels:{font:{size:11}}}}}});
+  // Jerarquía
+  $('hierCard').style.display='block';
+  $('hier').innerHTML=gers.map(function(g){
+    var jobs=[...mapData.filter(x=>x.gerencia===g).map(x=>Object.assign({},x)),...sesiones.filter(s=>s.gerencia===g).map(s=>Object.assign({},s,{session:true}))].sort((a,b)=>b.ipe-a.ipe);
+    if(!jobs.length)return'';
+    var gr=jobs.map(j=>j.ipe);
+    var rows=jobs.map(function(j){
+      return '<div class="hrowj"><span>'+(j.session?'◆ ':'')+j.cargo+(j.rol?' <span style="color:var(--muted)">· '+j.rol+'</span>':'')+(j.n>1?' <span style="color:var(--muted)">(x'+j.n+')</span>':'')+'</span><span class="gchip">'+j.ipe+'</span></div>';
+    }).join('');
+    return '<details><summary>'+g+'<span class="meta">'+jobs.length+' cargos · IPE '+Math.min.apply(null,gr)+'–'+Math.max.apply(null,gr)+'</span></summary>'+rows+'</details>';
+  }).join('');
+  // sesión
+  if(sesiones.length)renderSesTable();
+}
+$('guardarVal').addEventListener('click',async()=>{
+  const r=engine(state);if(!r)return;
+  const cargo=($('nomCargo').value||'Cargo sin nombre').trim();
+  const ger=($('gerCargo').value||'Sin gerencia').trim();
+  const obj={cargo,gerencia:ger,rol:'Valuacion',ipe:r.ipe,total:r.total,n:1,session:true,
+    niveles:{...state},puntos:{imp:r.pImp,com:r.pCom,inn:r.pInn,con:r.pCon,rie:r.pRie||0},
+    descripcion:($('desc').value||'').trim(),justificaciones:{...just}};
+  sesiones.unshift(obj);
+  let badge='local';
+  if(window._fbReady){try{await window.FB.saveValuacion(obj);badge='Firebase';}catch(e){badge='sin sync';console.warn(e);}}
+  $('saveOk').innerHTML=`<b>${cargo}</b> · IPE ${r.ipe} guardado (${badge}). Ver en Mapa.`;
+  $('saveOk').style.display='block';
+  renderMap();
+});
+$('expCsv').addEventListener('click',()=>{
+  const head='Cargo;Gerencia;Impacto;Contribucion;Comunicacion;Marco;Innovacion;Complejidad;Conocimiento;Equipos;Amplitud;Riesgo;Entorno;PtsImpacto;PtsComunicacion;PtsInnovacion;PtsConocimiento;PtsRiesgo;Total;IPE\n';
+  const body=sesiones.map(s=>[s.cargo,s.gerencia,s.niveles.impacto,s.niveles.contribucion,s.niveles.comunicacion,s.niveles.marco,s.niveles.innovacion,s.niveles.complejidad,s.niveles.conocimiento,s.niveles.equipos,s.niveles.amplitud,s.niveles.usarRiesgo?s.niveles.riesgo:'-',s.niveles.usarRiesgo?s.niveles.entorno:'-',s.puntos.imp,s.puntos.com,s.puntos.inn,s.puntos.con,s.puntos.rie||0,s.total,s.ipe].join(';')).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(["\ufeff"+head+body],{type:'text/csv'}));a.download='valuaciones_ipe_sesion.csv';a.click();
+});
+
+/* ================= ASISTENTE IA ================= */
+const SYS=`Eres especialista senior en compensaciones Mercer IPE 3.1, Tottus Chile (org=10).
+MISIÓN DOBLE: (A) inferir descriptor estructurado completo — extrae TODO lo que el texto permita, aunque sea implícito; (B) proponer niveles IPE.
+NUNCA dejes campos del descriptor vacíos si puedes inferirlos.
+
+INFERENCIA POR CAMPO:
+dc_cargo: nombre exacto | dc_gerencia: área funcional | dc_subarea: subárea específica
+dc_reporte: "reporta a X"→X | dc_pais: Chile si no se menciona
+dc_jerarquico: Sí si menciona equipo/liderazgo/personas a cargo, No si CI
+dc_proposito: síntesis 2-3 frases del valor que genera el cargo
+dc_resp1-5: funciones→responsabilidades con verbo de acción
+dc_contactos_int: todos los internos mencionados o inferibles
+dc_contactos_ext: todos los externos (proveedores, clientes, 3PL, etc.)
+dc_negociacion: "Sí — intereses en conflicto" si negocia precios/contratos; "Sí — intereses compartidos" si coordina con externos; "No" si solo interno
+dc_reportes_dir: número exacto, o inferir (jefe área≈5, CD operativo≈8)
+dc_tipo_equipo: quiénes son y especialidad
+dc_educacion: inferir del perfil (Ing→universitario titulado; operativo→técnico)
+dc_experiencia: inferir años y área
+dc_conocimiento: 4-6 conocimientos técnicos clave
+dc_alcance: Local/Nacional/Regional/Global
+dc_presupuesto: gerente→responsable total; jefe→gestión parcial; analista→seguimiento; operativo→No
+dc_impacto_ctx: consecuencias concretas si el cargo falla
+dc_autonomia: gerente→define estrategia; jefe→define plan; analista→ejecuta plan; operativo→sigue instrucciones
+
+ESCALAS IPE (respeta los valores exactos):
+impacto(1-5 ENTEROS): 1=Entrega 2=Operacional 3=Táctico 4=Estratégico 5=Visionario
+contribucion(1-5,½): 1=Limitada 2=Alguna 3=Directa 4=Significativa 5=Mayor
+comunicacion(1-5,½): 1=Transmitir 2=Adaptar 3=Influenciar 4=Negociar 5=Neg.estratégica
+marco(1-4,½): 1=Int.compartido 2=Ext.compartido 3=Int.divergente 4=Ext.divergente
+innovacion(1-6,½): 1=Seguir 2=Chequear 3=Modificar 4=Mejorar 5=Crear 6=Científico
+complejidad(1-4,½): 1=Definida 2=Difícil 3=Compleja 4=Multidimensional
+conocimiento(1-8,½): 1=Limitado 2=Básico 3=Amplio 4=Experto 5=Prof.reconocido 6=Especialista 7=Preeminencia 8=Amplia
+equipos(1-3,½): 1=Miembro 1.5=Coord 2=Líder(3+) 2.5=Expandido 3=Gerente equipos
+amplitud(1-3,½): 1=Local 1.5=Nac+coord 2=Regional 2.5=Reg-Global 3=Global
+
+CALIBRACIÓN TOTTUS: operativo imp1 eq1 IPE~40-44 | analista CI imp2 eq1 IPE~45-49 | supervisor imp1-2 eq1.5-2 IPE~44-47 | jefe área imp2 eq2-2.5 IPE~47-51 | subgerente imp2 contr4-4.5 IPE~52-55 | gerente imp3 IPE~56-60. CRÍTICO: imp3 SOLO si define procesos de función completa.
+
+JUSTIFICACIONES: máx 10 palabras. PREGUNTAS: máx 2.
+
+Responde SOLO el JSON, sin texto antes ni después, sin markdown:
+{"resumen_puesto":"","niveles":{"impacto":2,"contribucion":2,"comunicacion":2,"marco":1,"innovacion":2,"complejidad":2,"conocimiento":3,"equipos":1,"amplitud":1},"justificaciones":{"impacto":"","contribucion":"","comunicacion":"","marco":"","innovacion":"","complejidad":"","conocimiento":"","equipos":"","amplitud":""},"confianza":{"impacto":"media","contribucion":"media","comunicacion":"media","marco":"media","innovacion":"media","complejidad":"media","conocimiento":"media","equipos":"media","amplitud":"media"},"descriptor":{"dc_cargo":"","dc_gerencia":"","dc_subarea":"","dc_reporte":"","dc_pais":"Chile","dc_jerarquico":"No","dc_proposito":"","dc_resp1":"","dc_resp2":"","dc_resp3":"","dc_resp4":"","dc_resp5":"","dc_contactos_int":"","dc_contactos_ext":"","dc_negociacion":"No","dc_reportes_dir":"0","dc_reportes_ind":"0","dc_tipo_equipo":"","dc_educacion":"Universitario titulado","dc_experiencia":"","dc_conocimiento":"","dc_alcance":"Local (una ciudad / región)","dc_presupuesto":"No","dc_impacto_ctx":"","dc_autonomia":"Opera bajo estándares y procedimientos"},"preguntas":["",""]}`;
+
+async function callClaude(userMsg,sys){
+  const PROXY="https://us-central1-valuacion-de-cargos.cloudfunctions.net/ipeProxy";
+  const DIRECT="https://api.anthropic.com/v1/messages";
+  for(const[url,body]of[
+    [DIRECT,JSON.stringify({model:"claude-sonnet-4-6",max_tokens:8000,system:sys,messages:[{role:"user",content:userMsg}]})],
+    [PROXY, JSON.stringify({system:sys,user:userMsg,max_tokens:8000})]
+  ]){
+    try{
+      const res=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body});
+      const data=await res.json().catch(()=>null);
+      if(res.ok&&data&&!data.error){
+        const txt=(data.content||[]).map(i=>i.type==="text"?i.text:"").join("\n");
+        if(txt)return txt;
+      }
+    }catch(e){continue;}
+  }
+  throw new Error("SIN_CONEXION");
+}
+function parseJSONRobusto(raw){
+  var s=raw.replace(/```json/g,"").replace(/```/g,"").trim();
+  var a=s.indexOf("{"),b=s.lastIndexOf("}");
+  if(a>=0&&b>a)s=s.slice(a,b+1);
+  try{return JSON.parse(s)}catch(e){}
+  s=s.replace(/,(\s*[}\]])/g,"$1");
+  var d=0,q=false,x=false;
+  for(var i=0;i<s.length;i++){
+    var c=s[i];if(x){x=false;continue}if(c==="\\"){x=true;continue}
+    if(c==='"'){q=!q;continue}if(!q){if(c==="{")d++;else if(c==="}")d--;}
+  }
+  if(q)s+='"';s=s.replace(/,$/,"");while(d-->0)s+="}";
+  try{return JSON.parse(s)}catch(e2){return {niveles:{},descriptor:{},preguntas:[]}}
+}
+$('analizar').addEventListener('click',async()=>{
+  $('errbox').style.display='none';$('qsbox').style.display='none';
+  // Compilar descriptor del formulario al textarea oculto
+  if(typeof collectDescriptor==='function'){
+    const d=collectDescriptor();
+    if(typeof descriptorToText==='function'){const t=descriptorToText(d);if(t.length>30)$('desc').value=t;}
+    if(d.dc_cargo&&!$('nomCargo').value)$('nomCargo').value=d.dc_cargo;
+    if(d.dc_gerencia&&!$('gerCargo').value)$('gerCargo').value=d.dc_gerencia;
+    if(d.dc_jerarquico)$('jer').value=d.dc_jerarquico.toLowerCase().startsWith('s')?'si':'no';
+  }
+  const desc=$('desc').value.trim();
+  if(desc.length<25){$('errbox').textContent='Completa el descriptor: propósito, responsabilidades y si lidera personas. O carga un documento externo.';$('errbox').style.display='block';return}
+  const btn=$('analizar');btn.disabled=true;btn.innerHTML='<span class="spin"></span>Analizando con la metodología…';
+  try{
+    const jer=$('jer').value==='si'?'El rol ES jerárquico (lidera personas).':'El rol NO es jerárquico: equipos máximo 1.5.';
+    const nc=$('nomCargo').value?`Cargo: ${$('nomCargo').value}. `:'';
+    const raw=await callClaude(`${nc}${jer}\n\nDescripción del puesto:\n${desc}`,SYS);
+    const p=parseJSONRobusto(raw);
+    for(const dim of Object.keys(DIMS)){
+      let v=parseFloat(p.niveles[dim]);const d=DIMS[dim];
+      const ok=d.allowed.filter(x=>!blockedNow(dim,x));
+      if(!ok.includes(v))v=ok.reduce((a,b)=>Math.abs(b-v)<Math.abs(a-v)?b:a);
+      state[dim]=v;just[dim]=(p.justificaciones&&p.justificaciones[dim])||'';
+      renderDim(dim);
+      const cf=(p.confianza&&p.confianza[dim])||'';
+      if(cf){const el=$('conf_'+dim);el.textContent='confianza '+cf;el.className='conf '+cf;el.style.display='inline-block'}
+    }
+    // Rellenar descriptor con lo inferido
+    if(p.descriptor&&typeof fillDescriptor==='function'){
+      const cont=document.getElementById('descriptorIndContainer');
+      if(cont&&!cont.innerHTML&&typeof renderDescriptor==='function')renderDescriptor('descriptorIndContainer');
+      const filled=fillDescriptor(p.descriptor);
+      if(filled>0){const det=document.getElementById('descDetails');if(det)det.open=true;}
+    }
+    if(p.preguntas&&p.preguntas.length){$('qsbox').innerHTML='<b>Para afinar, confirma con el área:</b><br>· '+p.preguntas.filter(Boolean).join('<br>· ');$('qsbox').style.display='block'}
+    recalc();document.querySelector('.factor').scrollIntoView({behavior:'smooth'});
+  }catch(err){
+    let msg;
+    if(err.message==="SIN_CONEXION")msg='El asistente requiere abrir la plataforma DESDE el chat de Claude, o configurar un proxy propio si la alojas en Firebase/GitHub (ver pestaña Metodología). El motor de cálculo, el mapa y las gráficas funcionan completos sin conexión: valúa manualmente con los chips.';
+    else if(/overloaded|rate/i.test(err.message))msg='El asistente está saturado. Espera unos segundos y reintenta.';
+    else msg='No se pudo completar el análisis: '+err.message+'. Reintenta o valúa manualmente.';
+    $('errbox').textContent=msg;$('errbox').style.display='block';
+  }
+  btn.disabled=false;btn.textContent='Analizar con el asistente IPE';
+});
+$('limpiar').addEventListener('click',()=>{
+  Object.keys(DIMS).forEach(d=>{state[d]=null;delete just[d];renderDim(d)});
+  $('desc').value='';$('nomCargo').value='';$('qsbox').style.display='none';$('errbox').style.display='none';
+  $('resumenBox').style.display='none';$('copyResumen').style.display='none';$('saveOk').style.display='none';recalc();
+});
+$('genResumen').addEventListener('click',async()=>{
+  const r=engine(state);if(!r)return;
+  const btn=$('genResumen');btn.disabled=true;btn.innerHTML='<span class="spin"></span>Redactando…';
+  const det=Object.keys(DIMS).map(d=>`${DIMS[d].label}: ${state[d]} (${DIMS[d].levels[Math.floor(state[d])]||''}) — ${just[d]||'s/j'}`).join('\n');
+  const sys2='Eres un subgerente de compensaciones explicando una valuación Mercer IPE a un líder de área que NO conoce la metodología. Español claro y pedagógico, máximo 220 palabras, en prosa. Estructura: qué mide IPE (1 frase); qué se valuó y el resultado con su banda de carrera; las 2-3 dimensiones que más explican el grado; qué NO mide (desempeño del titular, carga de trabajo); cierre: el grado se ratifica en mesa. No inventes datos.';
+  try{
+    const raw=await callClaude(`Cargo: ${$('nomCargo').value||'(sin nombre)'} · Gerencia: ${$('gerCargo').value||'—'}\nDescripción: ${$('desc').value||'(no registrada)'}\n${det}\nPuntos: Impacto ${r.pImp}, Comunicación ${r.pCom}, Innovación ${r.pInn}, Conocimiento ${r.pCon}${state.usarRiesgo?', Riesgo '+r.pRie:''}. Total ${r.total} → IPE ${r.ipe} (${careerBand(r.ipe)}).`,sys2);
+    $('resumenBox').textContent=raw.trim();$('resumenBox').style.display='block';$('copyResumen').style.display='inline-block';
+  }catch(e){$('resumenBox').textContent=e.message==="SIN_CONEXION"?'El resumen con asistente requiere conexión (abrir desde Claude o configurar proxy). Usa los insights y justificaciones como base.':'No se pudo generar ('+e.message+'). Reintenta.';$('resumenBox').style.display='block'}
+  btn.disabled=false;btn.textContent='Generar resumen con el asistente';
+});
+$('copyResumen').addEventListener('click',()=>{navigator.clipboard.writeText($('resumenBox').textContent);$('copyResumen').textContent='Copiado ✓';setTimeout(()=>$('copyResumen').textContent='Copiar',1600)});
+
+/* ================= PESTAÑA METODOLOGÍA ================= */
+$('methBody').innerHTML=`
+<h2>La metodología en una página</h2>
+<p><b>Qué es IPE.</b> International Position Evaluation (Mercer) es un sistema global de valuación por puntos y factores: mide el <i>contenido del puesto</i> — nunca a la persona — a través de factores de negocio, y traduce los puntos a un grado (Position Class) comparable con el mercado y las encuestas TRS.</p>
+<h3>Los factores y su peso</h3>
+<table><tr><th>Factor</th><th>Dimensiones</th><th>Peso máximo</th><th>Qué mide</th></tr>
+<tr><td style="color:#0E6E6B"><b>Impacto</b></td><td>Impacto × Contribución × Tamaño</td><td>705 pts · 57%</td><td>Profundidad y amplitud de la influencia del puesto en la organización</td></tr>
+<tr><td style="color:#B4652B"><b>Comunicación</b></td><td>Comunicación × Marco</td><td>115 pts · 9%</td><td>La habilidad de comunicación requerida y su audiencia/propósito</td></tr>
+<tr><td style="color:#6B4FA3"><b>Innovación</b></td><td>Innovación × Complejidad</td><td>130 pts · 10%</td><td>Nivel de resolución de problemas y desarrollo, y naturaleza de los problemas</td></tr>
+<tr><td style="color:#2E6B3E"><b>Conocimiento</b></td><td>Conocimiento × Equipos × Amplitud</td><td>260 pts · 21%</td><td>Conocimiento técnico requerido, gestión de personas y contexto geográfico</td></tr>
+<tr><td><b>Riesgo</b></td><td>Riesgo × Entorno</td><td>35 pts · 3%</td><td>Factor opcional (manual oficial): se aplica solo cuando el riesgo físico/mental es una posibilidad cierta — típico en operaciones de CD, producción o seguridad. Activable por valuación.</td></tr></table>
+<h3>De puntos a grado</h3>
+<p>Los puntos de los factores se suman y el total se convierte a grado con bandas de 25 puntos: <b>IPE = 40 + (Total − 26) ÷ 25</b>. Ejemplo validado de tu mesa: 212 puntos → IPE 47. Estar cerca del borde de banda (± pocos puntos) es la señal para revisar sensibilidad antes de mesa.</p>
+<h3>Bandas de carrera (convención de mercado MUPCS, referencial)</h3>
+<table><tr><th>IPE</th><th>Banda típica</th></tr>
+<tr><td>40–41</td><td>Soporte / Para-profesional</td></tr><tr><td>42–45</td><td>Profesional entrada–experimentado</td></tr>
+<tr><td>46–49</td><td>Profesional Sr. / Supervisor / Jefatura inicial</td></tr><tr><td>50–53</td><td>Jefatura / Manager / Especialista</td></tr>
+<tr><td>54–56</td><td>Subgerencia / Senior Manager / Experto</td></tr><tr><td>57–59</td><td>Gerencia / Director de subfunción</td></tr>
+<tr><td>60–62</td><td>Gerencia de función / Dirección</td></tr><tr><td>63+</td><td>Alta dirección / Ejecutivo</td></tr></table>
+<p style="font-size:12.5px;color:var(--muted)">El alineamiento exacto varía por tamaño de organización e industria; ajústalo a la arquitectura Tottus cuando la definan.</p>
+<h3>De grado a banda salarial</h3>
+<p>La plataforma conecta cada grado con las <b>bandas salariales 2026</b> del Grupo (7 países, ancla P60, amplitud 60%: el máximo es 1.6× el mínimo, y el midpoint la media geométrica de referencia). Esto permite leer cada valuación en plata: cuánto vale el grado, cuánto cuesta la discusión de mesa (+1 grado ≈ +13–40% de midpoint según el tramo), y el compa-ratio del titular si ingresas su renta. Regla de lectura: compa-ratio 0.85–1.15 es posicionamiento saludable; bajo el mínimo es caso de ajuste; sobre el máximo, renta congelable o señal de revaluación.</p>
+<h3>Un matiz que confunde a todos: el Marco de comunicación</h3>
+<p>El orden oficial del Marco es: 1 internos compartidos · 2 <b>externos compartidos</b> · 3 <b>internos divergentes</b> · 4 externos divergentes. Es decir, <b>la divergencia de intereses pesa más que la externalidad</b>: alinear gerencias internas en conflicto (30 pts en Transmitir) es más exigente que informar a un externo colaborativo (25 pts). Úsalo como pregunta guía en mesa: ¿la contraparte quiere llegar a acuerdo, o tiene objetivos en conflicto?</p>
+<h3>Errores clásicos que esta herramienta previene</h3>
+<p>1) Valuar al titular y no al puesto. 2) Inflar Impacto: en poblaciones no ejecutivas la palanca real es Conocimiento/Equipos. 3) Elegir la comunicación excepcional en vez de la más exigente <i>regular</i>. 4) Equipos 2 sin equipo formal de 3+. 5) Ignorar la sensibilidad de borde de banda.</p>
+<h3>Alojar fuera de Claude (Firebase / GitHub)</h3>
+<p>Este archivo es 100% estático: puedes subirlo tal cual a <b>GitHub Pages</b> o <b>Firebase Hosting</b> y todo funciona — motor, mapa, gráficas, exportación — <b>excepto el asistente IA</b>, que dentro de Claude usa una conexión provista por la plataforma. Para habilitarlo alojado: crea una Firebase Function que reciba el prompt, llame a la API de Anthropic con tu propia API key (guardada como secreto, nunca en el HTML) y devuelva la respuesta; luego apunta la constante <span style="font-family:var(--mono)">PROXY_URL</span> del código a esa función. Para persistir el mapa y las valuaciones entre sesiones, el paso natural es Firestore: pídemelo y preparo el código de la función y la integración.</p>`;
+
+recalc();
+
+/* ── Firebase: arranque y helpers ───────────────────────── */
+function setFbStatus(t,ok){const el=$('fbStatus');if(!el)return;el.textContent=t;el.style.background=ok?'#0D2E1A':ok===false?'#2E1A0D':'#1C2D3A';el.style.color=ok?'#5ED99A':ok===false?'#F4B63F':'#93A8B8';}
+function renderSesTable(){
+  const tbl=$('sesTable');if(!tbl)return;$('sesCard').style.display='block';
+  tbl.innerHTML='<tr><th>Cargo</th><th>Gerencia</th><th>Pts</th><th>IPE</th><th>Banda</th><th>Sync</th></tr>'+
+    sesiones.map(s=>`<tr><td>${s.cargo}</td><td>${s.gerencia}</td><td class="mono">${s.total||'—'}</td><td class="mono"><b>${s.ipe}</b></td><td style="font-size:11.5px">${careerBand(s.ipe)}</td><td style="font-size:11px;color:var(--muted)">${s.id?'☁':'💻'}</td></tr>`).join('');
+}
+async function initFirebase(){
+  if(!window._fbReady)return;
+  try{
+    const[vals,mapa]=await Promise.all([window.FB.loadValuaciones(),window.FB.loadMapa()]);
+    if(vals.length){vals.forEach(v=>{if(!sesiones.find(s=>s.id===v.id))sesiones.push({...v,session:true})});renderSesTable();}
+    if(!mapData.length&&mapa.length){mapData=mapa;$('mapOk').textContent=`Mapa desde Firebase: ${mapa.length} cargos.`;$('mapOk').style.display='block';renderMap();}
+    setFbStatus('☁ Conectado',true);
+  }catch(e){setFbStatus('⚠ '+e.message,false);console.warn('[IPE-FB]',e);}
+}
+document.addEventListener('fb:ready',initFirebase);
+setTimeout(()=>{if(!window._fbReady)setFbStatus('Sin Firebase · modo local',null);},5000);
+
+/* Stubs para onclick del HTML — se sobreescriben cuando carga el extra */
+function switchMode(m){
+  ['Ind','Mas','Set'].forEach(function(x){
+    var el=document.getElementById('mode'+x);
+    var tab=document.getElementById('tab'+x);
+    if(el)el.style.display=x.toLowerCase()===m?'block':'none';
+    if(tab)tab.classList.toggle('on',x.toLowerCase()===m);
+  });
+  if(m==='set'&&typeof renderSetPanel==='function')renderSetPanel();
+}
+function switchMapView(v){
+  ['Bubble','Matrix','Org','Hist'].forEach(function(x){
+    var el=document.getElementById('mapView'+x);
+    var tab=document.getElementById('mapTab'+x);
+    if(el)el.style.display=x.toLowerCase()===v?'block':'none';
+    if(tab)tab.classList.toggle('on',x.toLowerCase()===v);
+  });
+  if(v==='matrix'&&typeof renderMatrix==='function')renderMatrix();
+  if(v==='org'&&typeof renderOrgMatrix==='function')renderOrgMatrix();
+}
+</script>
+<script>
+
+/* ═══════════════════════════════════════════════════════════════════
+   MÓDULOS ADICIONALES — Valuador IPE Tottus
+   Requiere: motor v2 cargado (DIMS, state, just, sesiones, mapData,
+             engine, recalc, careerBand, callClaude, parseJSONRobusto)
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Clasificación Mercer ── */
+var MERCER_LEVELS = {
+  E5:{label:'C-Level',color:'#1B4332',desc:'Visión y dirección de la organización.'},
+  E4:{label:'Ejecutivo Top / VP Global',color:'#2D6A4F',desc:'Estrategia de largo plazo multi-función.'},
+  E3:{label:'Director / VP Regional',color:'#40916C',desc:'Estrategia a nivel organización o función global.'},
+  E2:{label:'Director de Función',color:'#52B788',desc:'Estrategia funcional de mediano-largo plazo.'},
+  M5:{label:'Gerente Senior',color:'#74C69D',desc:'Define procesos y estándares de función completa.'},
+  M4:{label:'Gerente',color:'#95D5B2',desc:'Gestiona departamentos o unidades.'},
+  M3:{label:'Jefe / Junior Manager Sr.',color:'#B7E4C7',desc:'Alcanza objetivos operativos.'},
+  M2:{label:'Supervisor / Líder de equipo',color:'#D8F3DC',desc:'Lidera equipo operativo con estándares definidos.'},
+  P5:{label:'Especialista Experto',color:'#52B788',desc:'Profesional sin equipo, conocimiento experto.'},
+  P4:{label:'Profesional Senior',color:'#74C69D',desc:'Profesional experimentado.'},
+  P3:{label:'Profesional / Analista Sr.',color:'#95D5B2',desc:'Opera bajo estándares, conocimiento básico-amplio.'},
+  P2:{label:'Analista / Profesional',color:'#B7E4C7',desc:'Profesional principiante, supervisión cercana.'},
+  S1:{label:'Soporte / Para-profesional',color:'#D8F3DC',desc:'Tareas rutinarias dentro de límites estrechos.'}
+};
+
+function getMercerLevel(ipe, imp, eq) {
+  var g=parseInt(ipe||0), i=parseFloat(imp||0), e=parseFloat(eq||0);
+  if(i>=5) return 'E5';
+  if(i>=4&&g>=65) return 'E4';
+  if(i>=4&&g>=60) return 'E3';
+  if(i>=3.5&&g>=57) return 'E2';
+  if(i>=3&&e>=2.5&&g>=54) return 'M5';
+  if(i>=3&&g>=50) return 'M4';
+  if(i>=2&&e>=2&&g>=47) return 'M3';
+  if(i>=2&&e>=1.5&&g>=44) return 'M2';
+  if(i>=2&&g>=47) return 'P5';
+  if(i>=2&&g>=44) return 'P4';
+  if(i>=2&&g>=42) return 'P3';
+  if(i>=1&&g>=40) return 'P2';
+  return 'S1';
+}
+function getMercerLevelInfo(ipe, imp, eq) {
+  var k = getMercerLevel(ipe, imp, eq);
+  return Object.assign({key:k}, MERCER_LEVELS[k]);
+}
+
+/* ── Descriptor estructurado ── */
+var DESCRIPTOR_FIELDS = [
+  {section:'Identificación', fields:[
+    {id:'dc_cargo',      label:'Nombre del cargo',     type:'text',     req:true,  hint:'Nombre oficial del puesto'},
+    {id:'dc_gerencia',   label:'Gerencia / Área',       type:'text',     req:true,  hint:'Ej.: Logística, Personas'},
+    {id:'dc_subarea',    label:'Subárea',               type:'text',     req:false, hint:'Ej.: Distribución, CD'},
+    {id:'dc_reporte',    label:'Reporta a (cargo)',     type:'text',     req:true,  hint:'Cargo jefe directo'},
+    {id:'dc_pais',       label:'País / Ciudad',         type:'text',     req:false, hint:'Chile - Santiago'},
+    {id:'dc_jerarquico', label:'¿Lidera personas?',     type:'select',   req:true,  options:['Sí','No']},
+  ]},
+  {section:'Propósito', fields:[
+    {id:'dc_proposito', label:'Propósito / Razón de ser', type:'textarea', req:true, hint:'En 2-3 frases: para qué existe este cargo y qué valor genera.'},
+  ]},
+  {section:'Responsabilidades', fields:[
+    {id:'dc_resp1', label:'Responsabilidad 1', type:'textarea', req:true,  hint:'La más importante.'},
+    {id:'dc_resp2', label:'Responsabilidad 2', type:'textarea', req:true,  hint:''},
+    {id:'dc_resp3', label:'Responsabilidad 3', type:'textarea', req:false, hint:''},
+    {id:'dc_resp4', label:'Responsabilidad 4', type:'textarea', req:false, hint:''},
+    {id:'dc_resp5', label:'Responsabilidad 5', type:'textarea', req:false, hint:''},
+  ]},
+  {section:'Comunicación', fields:[
+    {id:'dc_contactos_int', label:'Contactos internos principales',  type:'textarea', req:true,  hint:'Con quién y para qué internamente.'},
+    {id:'dc_contactos_ext', label:'Contactos externos',              type:'textarea', req:false, hint:'Con quién y para qué externamente.'},
+    {id:'dc_negociacion',   label:'Negocia / influye externamente', type:'select',   req:true,
+      options:['No','Sí — intereses compartidos (ej.: proveedor colaborativo)','Sí — intereses en conflicto (ej.: negociación de contratos)']},
+  ]},
+  {section:'Equipo', fields:[
+    {id:'dc_reportes_dir', label:'N° reportes directos',   type:'number',   req:true,  hint:'0 si CI'},
+    {id:'dc_reportes_ind', label:'N° reportes indirectos', type:'number',   req:false, hint:''},
+    {id:'dc_tipo_equipo',  label:'Tipo de equipo',         type:'textarea', req:false, hint:'Quiénes son, nivel y especialidad.'},
+  ]},
+  {section:'Conocimiento requerido', fields:[
+    {id:'dc_educacion',    label:'Educación mínima',          type:'select', req:true,
+      options:['Enseñanza media completa','Técnico nivel superior','Universitario en curso','Universitario titulado','Postgrado / MBA','Doctorado']},
+    {id:'dc_experiencia',  label:'Experiencia mínima',        type:'text',     req:true,  hint:'Ej.: 3-5 años en logística'},
+    {id:'dc_conocimiento', label:'Conocimientos técnicos clave', type:'textarea', req:true, hint:'4-6 conocimientos específicos del rol.'},
+  ]},
+  {section:'Alcance y contexto', fields:[
+    {id:'dc_alcance',      label:'Alcance geográfico', type:'select', req:true,
+      options:['Local (una ciudad / región)','Nacional (todo Chile)','Nacional + coordinación regional regular','Latinoamérica / Regional','Global']},
+    {id:'dc_presupuesto',  label:'Maneja presupuesto', type:'select', req:false,
+      options:['No','Sí — seguimiento','Sí — gestión parcial','Sí — responsable total']},
+    {id:'dc_impacto_ctx',  label:'Principal resultado que impacta', type:'textarea', req:true,  hint:'Qué pasa si este cargo no existe o falla.'},
+    {id:'dc_autonomia',    label:'Nivel de autonomía', type:'select', req:true,
+      options:['Opera bajo instrucciones específicas','Opera bajo estándares y procedimientos','Define cómo ejecutar dentro de un plan dado','Define el plan operacional de su área','Define la estrategia de la función']},
+  ]},
+];
+
+function renderDescriptor(cId) {
+  var c = document.getElementById(cId); if(!c) return;
+  var html = '';
+  DESCRIPTOR_FIELDS.forEach(function(sec) {
+    html += '<div class="dc-section"><div class="dc-section-title">' + sec.section + '</div>';
+    sec.fields.forEach(function(f) {
+      html += '<div class="dc-field"><label class="dc-label">' + f.label + (f.req ? '<span class="dc-req">*</span>' : '') + '</label>';
+      if (f.type==='textarea')
+        html += '<textarea id="' + f.id + '" class="dc-input dc-ta" placeholder="' + (f.hint||'') + '"></textarea>';
+      else if (f.type==='select')
+        html += '<select id="' + f.id + '" class="dc-input dc-sel"><option value="">— seleccionar —</option>' +
+          (f.options||[]).map(function(o){return '<option value="'+o+'">'+o+'</option>';}).join('') + '</select>';
+      else if (f.type==='number')
+        html += '<input type="number" id="' + f.id + '" class="dc-input dc-num" min="0" placeholder="' + (f.hint||'0') + '">';
+      else
+        html += '<input type="text" id="' + f.id + '" class="dc-input dc-txt" placeholder="' + (f.hint||'') + '">';
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+  c.innerHTML = html;
+}
+
+function collectDescriptor() {
+  var d = {};
+  DESCRIPTOR_FIELDS.forEach(function(sec) {
+    sec.fields.forEach(function(f) {
+      var el = document.getElementById(f.id);
+      if(el) d[f.id] = el.value.trim();
+    });
+  });
+  return d;
+}
+
+function fillDescriptor(data) {
+  if(!data) return 0;
+  var filled = 0;
+  Object.keys(data).forEach(function(key) {
+    var el = document.getElementById(key);
+    if(el && data[key] && String(data[key]).trim() && !el.value) {
+      el.value = String(data[key]).trim();
+      filled++;
+    }
+  });
+  if(data.dc_cargo)    { var n=document.getElementById('nomCargo'); if(n&&!n.value) n.value=data.dc_cargo; }
+  if(data.dc_gerencia) { var g=document.getElementById('gerCargo'); if(g&&!g.value) g.value=data.dc_gerencia; }
+  if(data.dc_jerarquico) {
+    var j=document.getElementById('jer');
+    if(j) j.value=data.dc_jerarquico.toLowerCase().startsWith('s')?'si':'no';
+  }
+  return filled;
+}
+
+function descriptorToText(d) {
+  if(!d||!d.dc_cargo) return '';
+  var lines = ['Cargo: '+d.dc_cargo+' | Gerencia: '+d.dc_gerencia+(d.dc_subarea?' / '+d.dc_subarea:'')];
+  if(d.dc_reporte)   lines.push('Reporta a: '+d.dc_reporte);
+  if(d.dc_pais)      lines.push('País: '+d.dc_pais);
+  lines.push('Lidera personas: '+(d.dc_jerarquico||'No'));
+  if(d.dc_proposito) lines.push('\nPROPÓSITO:\n'+d.dc_proposito);
+  var resps = [d.dc_resp1,d.dc_resp2,d.dc_resp3,d.dc_resp4,d.dc_resp5].filter(Boolean);
+  if(resps.length)   lines.push('\nRESPONSABILIDADES:\n'+resps.map(function(r,i){return (i+1)+'. '+r;}).join('\n'));
+  if(d.dc_contactos_int) lines.push('\nCONTACTOS INTERNOS: '+d.dc_contactos_int);
+  if(d.dc_contactos_ext) lines.push('CONTACTOS EXTERNOS: '+d.dc_contactos_ext);
+  if(d.dc_negociacion)   lines.push('NEGOCIACIÓN: '+d.dc_negociacion);
+  if(d.dc_reportes_dir)  lines.push('\nREPORTES DIRECTOS: '+d.dc_reportes_dir+(d.dc_reportes_ind?' | Indirectos: '+d.dc_reportes_ind:''));
+  if(d.dc_tipo_equipo)   lines.push('TIPO EQUIPO: '+d.dc_tipo_equipo);
+  if(d.dc_educacion)     lines.push('\nEDUCACIÓN: '+d.dc_educacion);
+  if(d.dc_experiencia)   lines.push('EXPERIENCIA: '+d.dc_experiencia);
+  if(d.dc_conocimiento)  lines.push('CONOCIMIENTOS: '+d.dc_conocimiento);
+  if(d.dc_alcance)       lines.push('ALCANCE: '+d.dc_alcance);
+  if(d.dc_presupuesto)   lines.push('PRESUPUESTO: '+d.dc_presupuesto);
+  if(d.dc_autonomia)     lines.push('AUTONOMÍA: '+d.dc_autonomia);
+  if(d.dc_impacto_ctx)   lines.push('IMPACTO SI FALLA: '+d.dc_impacto_ctx);
+  return lines.join('\n');
+}
+
+/* ── Carga de documento externo ── */
+async function processExternalDoc(file) {
+  var btn = document.getElementById('docLoadBtn');
+  btn.disabled = true; btn.textContent = 'Leyendo…';
+  try {
+    var text = '', ext = file.name.split('.').pop().toLowerCase();
+    if(ext === 'txt') {
+      text = await file.text();
+    } else if(ext === 'pdf') {
+      var ab = await file.arrayBuffer(), bytes = new Uint8Array(ab), raw = '';
+      for(var i=0; i<Math.min(bytes.length,80000); i++) {
+        var c=bytes[i]; if(c>=32&&c<127) raw+=String.fromCharCode(c); else if(c===10||c===13) raw+=' ';
+      }
+      var parts = raw.match(/\(([^)]{4,200})\)/g)||[];
+      text = (parts.map(function(m){return m.slice(1,-1);}).join(' ')||raw)
+        .replace(/[^\w\s.,;:()\-áéíóúñÁÉÍÓÚÑ]/g,' ').replace(/\s+/g,' ').trim().slice(0,4000);
+    } else {
+      text = await file.text();
+    }
+    if(!text||text.length<20) {
+      document.getElementById('errbox').textContent = 'No se pudo extraer texto. Usa formato .txt.';
+      document.getElementById('errbox').style.display = 'block'; return;
+    }
+    // Cargar texto en campo oculto y abrir formulario
+    document.getElementById('desc').value = text.slice(0, 2000);
+    var cont = document.getElementById('descriptorIndContainer');
+    if(cont && !cont.innerHTML) renderDescriptor('descriptorIndContainer');
+    var details = document.getElementById('descDetails');
+    if(details) details.open = true;
+    // Mapeo automático con el asistente
+    try {
+      var mapSys = 'Extrae del documento de cargo la información estructurada. Responde SOLO JSON sin markdown:\n{"dc_cargo":"","dc_gerencia":"","dc_subarea":"","dc_reporte":"","dc_pais":"Chile","dc_jerarquico":"Sí o No","dc_proposito":"","dc_resp1":"","dc_resp2":"","dc_resp3":"","dc_resp4":"","dc_resp5":"","dc_contactos_int":"","dc_contactos_ext":"","dc_negociacion":"No","dc_reportes_dir":"0","dc_reportes_ind":"0","dc_tipo_equipo":"","dc_educacion":"Universitario titulado","dc_experiencia":"","dc_conocimiento":"","dc_alcance":"Local (una ciudad / región)","dc_presupuesto":"No","dc_impacto_ctx":"","dc_autonomia":"Opera bajo estándares y procedimientos"}';
+      var raw = await callClaude('DOCUMENTO:\n' + text.slice(0, 3000), mapSys);
+      var data = parseJSONRobusto(raw);
+      var filled = fillDescriptor(data);
+      document.getElementById('qsbox').textContent = '✓ ' + filled + ' campos pre-rellenados desde "' + file.name + '". Revisa y ajusta antes de analizar.';
+      document.getElementById('qsbox').style.display = 'block';
+    } catch(e) {
+      document.getElementById('qsbox').innerHTML = '<b>✓ Texto cargado de "' + file.name + '".</b> ' +
+        (e.message==='SIN_CONEXION' ? 'Mapeo automático requiere créditos Anthropic. Completa el descriptor manualmente y presiona Analizar.' : 'Error: '+e.message);
+      document.getElementById('qsbox').style.display = 'block';
+    }
+  } catch(err) {
+    document.getElementById('errbox').textContent = 'Error leyendo el archivo: ' + err.message;
+    document.getElementById('errbox').style.display = 'block';
+  } finally {
+    btn.disabled = false; btn.textContent = '↑ Cargar descriptor externo';
+  }
+}
+
+/* ── switchMode: tabs Individual / Masivo / SET ── */
+function switchMode(mode) {
+  ['Ind','Mas','Set'].forEach(function(m) {
+    var el  = document.getElementById('mode'+m);
+    var tab = document.getElementById('tab'+m);
+    if(el)  el.style.display  = m.toLowerCase()===mode ? 'block' : 'none';
+    if(tab) tab.classList.toggle('on', m.toLowerCase()===mode);
+  });
+  if(mode==='set' && typeof renderSetPanel==='function') renderSetPanel();
+}
+
+/* ── switchMapView ── */
+function switchMapView(view) {
+  ['Bubble','Matrix','Org','Hist'].forEach(function(v) {
+    var el  = document.getElementById('mapView'+v);
+    var tab = document.getElementById('mapTab'+v);
+    if(el)  el.style.display = v.toLowerCase()===view ? 'block' : 'none';
+    if(tab) tab.classList.toggle('on', v.toLowerCase()===view);
+  });
+  if(view==='matrix') renderMatrix();
+  if(view==='org')    renderOrgMatrix();
+  if(view==='hist')   { var h=document.getElementById('histCard'); if(h) h.style.display='block'; }
+  if(view==='bubble') { var s=document.getElementById('scatterCard'); if(s) s.style.display='block'; }
+}
+
+/* ── renderMatrix ── */
+function renderMatrix() {
+  var c = document.getElementById('matrixContainer'); if(!c) return;
+  if(!mapData.length&&!sesiones.length) { c.innerHTML='<p class="hint">Carga el mapa primero.</p>'; return; }
+  var BANDS=[{l:'40–44',lo:40,hi:44},{l:'45–49',lo:45,hi:49},{l:'50–53',lo:50,hi:53},
+             {l:'54–56',lo:54,hi:56},{l:'57–59',lo:57,hi:59},{l:'60+',lo:60,hi:99}];
+  var gers=[...new Set([...mapData.map(function(x){return x.gerencia;}),...sesiones.map(function(s){return s.gerencia;})])].sort();
+  var mx={};
+  gers.forEach(function(g){mx[g]={};BANDS.forEach(function(b){mx[g][b.l]={v:0,s:0};});});
+  mapData.forEach(function(x){var b=BANDS.find(function(b){return x.ipe>=b.lo&&x.ipe<=b.hi;});if(b&&mx[x.gerencia])mx[x.gerencia][b.l].v+=(x.n||1);});
+  sesiones.forEach(function(s){var b=BANDS.find(function(b){return s.ipe>=b.lo&&s.ipe<=b.hi;});if(b){if(!mx[s.gerencia]){mx[s.gerencia]={};BANDS.forEach(function(bb){mx[s.gerencia][bb.l]={v:0,s:0};});}mx[s.gerencia][b.l].s+=1;}});
+  var maxV=Math.max(1,...gers.flatMap(function(g){return BANDS.map(function(b){return mx[g]&&mx[g][b.l]?mx[g][b.l].v:0;});}));
+  var html='<div style="overflow-x:auto"><table style="border-collapse:collapse;font-size:12px;min-width:500px;width:100%"><thead><tr><th style="padding:8px 12px;background:var(--ink);color:var(--bg);text-align:left;width:140px">Gerencia</th>';
+  BANDS.forEach(function(b){html+='<th style="padding:6px 10px;background:var(--ink);color:var(--gold);text-align:center;white-space:nowrap">'+b.l+'</th>';});
+  html+='<th style="padding:6px 10px;background:var(--ink);color:var(--bg);text-align:center">Total</th></tr></thead><tbody>';
+  gers.forEach(function(g,gi){
+    var rowT=BANDS.reduce(function(a,b){return a+((mx[g]&&mx[g][b.l])?mx[g][b.l].v+mx[g][b.l].s:0);},0);
+    html+='<tr style="background:'+(gi%2===0?'var(--surface)':'var(--surface2)')+'"><td style="padding:7px 12px;font-weight:600;color:var(--ink);border-right:1px solid var(--line)">'+g+'</td>';
+    BANDS.forEach(function(b){
+      var v=(mx[g]&&mx[g][b.l])?mx[g][b.l].v:0, s=(mx[g]&&mx[g][b.l])?mx[g][b.l].s:0, tot=v+s;
+      var intensity=tot?Math.min(0.85,0.1+0.75*(v/maxV)):0;
+      var bg=tot?'rgba(99,102,241,'+intensity.toFixed(2)+')':'transparent';
+      html+='<td style="padding:7px 10px;text-align:center;background:'+bg+';border:1px solid var(--line);min-width:50px">';
+      if(v) html+='<span style="font-weight:700;color:'+(intensity>0.5?'#fff':'var(--ink)')+'">'+v+'</span>';
+      if(s) html+='<span style="color:var(--gold);font-weight:700">◆'+s+'</span>';
+      if(!tot) html+='<span style="color:var(--muted);font-size:10px">·</span>';
+      html+='</td>';
+    });
+    html+='<td style="padding:7px 10px;text-align:center;font-weight:700;color:var(--ink)">'+(rowT||'·')+'</td></tr>';
+  });
+  html+='</tbody></table></div><div style="margin-top:8px;font-size:11px;color:var(--muted)">Números = cargos vigentes · <span style="color:var(--gold)">◆</span> = sesión</div>';
+  c.innerHTML = html;
+}
+
+/* ── getBandLabel + renderOrgMatrix ── */
+function getBandLabel(ipe) {
+  if(ipe>=63) return {key:'clevel',label:'C-Level / Ejecutivos',order:0};
+  if(ipe>=57) return {key:'tm',label:'TM — Gerencias',order:1};
+  if(ipe>=54) return {key:'mm',label:'MM — Subgerencias',order:2};
+  if(ipe>=46) return {key:'jm',label:'JM — Jefaturas',order:3};
+  return {key:'ep',label:'EP — Analistas / Soporte',order:4};
+}
+
+function renderOrgMatrix() {
+  var c = document.getElementById('orgMatrixContainer'); if(!c) return;
+  var all = [
+    ...mapData.map(function(x){return Object.assign({},x,{session:false});}),
+    ...sesiones.map(function(s){return {cargo:s.cargo,gerencia:s.gerencia,ipe:s.ipe,n:1,session:true};})
+  ];
+  if(!all.length) { c.innerHTML='<div style="padding:20px;color:var(--muted)">Carga el mapa de cargos para ver el organigrama.</div>'; return; }
+  var bands={};
+  all.forEach(function(ca){
+    var b=getBandLabel(ca.ipe);
+    if(!bands[b.key]) bands[b.key]={meta:b,gers:{}};
+    if(!bands[b.key].gers[ca.gerencia]) bands[b.key].gers[ca.gerencia]=[];
+    bands[b.key].gers[ca.gerencia].push(ca);
+  });
+  var ordered=Object.values(bands).sort(function(a,b){return a.meta.order-b.meta.order;});
+  var allGers=[...new Set(all.map(function(ca){return ca.gerencia;}))].sort();
+  var html='<div class="org-matrix">';
+  ordered.forEach(function(band){
+    html+='<div class="org-band-row"><div class="org-band-label band-'+band.meta.key+'">'+band.meta.label+'</div><div class="org-cells">';
+    var gersInBand=allGers.filter(function(g){return band.gers[g]&&band.gers[g].length;});
+    if(!gersInBand.length) html+='<div style="color:var(--muted);font-size:12px;align-self:center;padding:8px">Sin cargos en este nivel</div>';
+    else gersInBand.forEach(function(ger){
+      html+='<div class="org-col"><div class="org-gerencia-label">'+ger+'</div>';
+      band.gers[ger].forEach(function(ca){
+        html+='<div class="org-card'+(ca.session?' session':'')+'"><div class="oc-ger">'+ca.gerencia+'</div><div class="oc-cargo">'+ca.cargo+'</div><span class="oc-ipe">IPE '+ca.ipe+'</span>'+(ca.n>1?'<span style="position:absolute;top:6px;right:6px;font-size:9px;color:var(--muted)">x'+ca.n+'</span>':'')+'</div>';
+      });
+      html+='</div>';
+    });
+    html+='</div></div>';
+  });
+  html+='</div>';
+  c.innerHTML = html;
+}
+
+/* ── renderSetPanel ── */
+function renderSetPanel() {
+  var el = document.getElementById('setList'); if(!el) return;
+  if(!sesiones.length) {
+    el.innerHTML = '<p class="hint" style="padding:16px 0">Sin valuaciones en esta sesión. Valúa un cargo y presiona "◆ Guardar en el mapa".</p>'; return;
+  }
+  el.innerHTML = sesiones.map(function(s,i) {
+    return '<div class="set-card">' +
+      '<div class="set-ipe">'+s.ipe+'</div>' +
+      '<div class="set-cargo">'+s.cargo+'</div>' +
+      '<div class="set-meta">'+s.gerencia+' · '+(s.fecha?new Date(s.fecha).toLocaleDateString('es-CL'):'sesión actual')+'</div>' +
+      '<div class="set-pts">'+(s.total||'—')+' pts · '+careerBand(s.ipe)+'</div>' +
+      '<div class="set-actions">' +
+        '<button class="set-btn" data-action="resumen" data-idx="'+i+'">↓ Resumen IPE (PDF)</button>' +
+        (s.descriptor ? '<button class="set-btn" data-action="descriptor" data-idx="'+i+'">↓ Descriptor (PDF)</button>' : '') +
+      '</div>' +
+      '</div>';
+  }).join('');
+  // Event delegation para botones del SET
+  el.addEventListener('click', function(e) {
+    var btn = e.target.closest('.set-btn[data-action]');
+    if(!btn) return;
+    var idx = parseInt(btn.dataset.idx);
+    var s = sesiones[idx];
+    if(btn.dataset.action==='resumen') exportResumenValuacion(s);
+    if(btn.dataset.action==='descriptor' && s.descriptor) exportDescriptorPDF(s.descriptor);
+  });
+}
+
+/* ── Exportar PDFs ── */
+function exportDescriptorPDF(d) {
+  if(!d) { alert('Sin descriptor completo.'); return; }
+  var fecha = new Date().toLocaleDateString('es-CL',{day:'2-digit',month:'long',year:'numeric'});
+  var resps = [d.dc_resp1,d.dc_resp2,d.dc_resp3,d.dc_resp4,d.dc_resp5].filter(Boolean);
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>' +
+    '@page{size:A4;margin:25mm 20mm}*{box-sizing:border-box;margin:0;padding:0}' +
+    'body{font-family:Arial,sans-serif;font-size:10.5pt;color:#1a1a1a;line-height:1.5}' +
+    '.hdr{border-bottom:3px solid #000;padding-bottom:12px;margin-bottom:20px}' +
+    '.hdr h1{font-size:18pt;font-weight:700}.sub{font-size:9pt;color:#666;text-transform:uppercase;letter-spacing:.5px}' +
+    '.sec{margin-bottom:16px}.sec-title{font-size:8pt;font-weight:700;text-transform:uppercase;background:#000;color:#fff;padding:3px 8px;border-radius:3px;margin-bottom:8px;display:inline-block}' +
+    '.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.item .label{font-size:8pt;color:#888;font-weight:700;text-transform:uppercase;margin-bottom:2px}' +
+    '.resp{display:flex;gap:8px;margin-bottom:6px}.resp-n{min-width:20px;height:20px;background:#000;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8pt;font-weight:700;flex-shrink:0}' +
+    '.footer{position:fixed;bottom:10mm;left:20mm;right:20mm;text-align:center;font-size:7.5pt;color:#bbb;border-top:1px solid #e0e0e0;padding-top:4px}' +
+    '</style></head><body>' +
+    '<div class="footer">Descriptor · '+d.dc_cargo+' · '+d.dc_gerencia+' · '+fecha+'</div>' +
+    '<div class="hdr"><div class="sub">Descriptor de cargo</div><h1>'+d.dc_cargo+'</h1>' +
+    '<div style="margin-top:6px;font-size:10pt"><b>'+d.dc_gerencia+'</b>'+(d.dc_subarea?' / '+d.dc_subarea:'')+(d.dc_reporte?' · Reporta a: <b>'+d.dc_reporte+'</b>':'')+' · '+fecha+'</div></div>' +
+    '<div class="sec"><div class="sec-title">Propósito</div><p>'+(d.dc_proposito||'—')+'</p></div>';
+  if(resps.length) html += '<div class="sec"><div class="sec-title">Responsabilidades</div>'+resps.map(function(r,i){return '<div class="resp"><div class="resp-n">'+(i+1)+'</div><div>'+r+'</div></div>';}).join('')+'</div>';
+  html += '<div class="sec"><div class="sec-title">Perfil</div><div class="grid">' +
+    '<div class="item"><div class="label">Educación</div><div>'+(d.dc_educacion||'—')+'</div></div>' +
+    '<div class="item"><div class="label">Experiencia</div><div>'+(d.dc_experiencia||'—')+'</div></div>' +
+    '<div class="item"><div class="label">Alcance</div><div>'+(d.dc_alcance||'—')+'</div></div>' +
+    '<div class="item"><div class="label">Reportes directos</div><div>'+(d.dc_reportes_dir||'0')+'</div></div>' +
+    '</div></div>' +
+    '<div class="sec"><div class="sec-title">Conocimiento técnico</div><p>'+(d.dc_conocimiento||'—')+'</p></div>' +
+    '<div class="sec"><div class="sec-title">Autonomía</div><p>'+(d.dc_autonomia||'—')+'</p></div>' +
+    '</body></html>';
+  var w=window.open('','_blank'); w.document.write(html); w.document.close(); w.focus(); setTimeout(function(){w.print();},500);
+}
+
+function exportResumenValuacion(s) {
+  var d = s.descriptor||{dc_cargo:s.cargo,dc_gerencia:s.gerencia};
+  var fecha = new Date().toLocaleDateString('es-CL',{day:'2-digit',month:'long',year:'numeric'});
+  var pts = s.puntos||{}; var info = getMercerLevelInfo(s.ipe,s.niveles&&s.niveles.impacto,s.niveles&&s.niveles.equipos);
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>' +
+    '@page{size:A4;margin:25mm 20mm}*{box-sizing:border-box;margin:0;padding:0}' +
+    'body{font-family:Arial,sans-serif;font-size:10.5pt;color:#1a1a1a;line-height:1.5}' +
+    '.hdr{background:#111;color:#fff;padding:16px 20px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}' +
+    '.grade{font-size:36pt;font-weight:800;color:#F59E0B;line-height:1}' +
+    'table{width:100%;border-collapse:collapse;font-size:9.5pt}th{background:#f4f4f4;font-size:8pt;text-transform:uppercase;color:#888;padding:6px 10px;text-align:left;border-bottom:2px solid #e0e0e0;font-weight:700}td{padding:7px 10px;border-bottom:1px solid #eee}' +
+    '.total{font-weight:700;background:#111;color:#fff}.pts-cell{color:#F59E0B;font-size:13pt}' +
+    '.footer{position:fixed;bottom:10mm;left:20mm;right:20mm;text-align:center;font-size:7.5pt;color:#bbb;border-top:1px solid #e0e0e0;padding-top:4px}' +
+    '.sign table{width:100%}.sign th{font-size:8pt;background:#f9f9f9;border-bottom:1px solid #e0e0e0;height:36px}' +
+    '</style></head><body>' +
+    '<div class="footer">Valuación IPE · Mercer IPE 3.1 · Tottus · '+fecha+'</div>' +
+    '<div class="hdr"><div><h1 style="font-size:16pt">'+d.dc_cargo+'</h1>' +
+    '<div style="font-size:9pt;opacity:.6">'+d.dc_gerencia+' · '+fecha+'</div></div>' +
+    '<div style="text-align:right"><div class="grade">'+s.ipe+'</div><div style="font-size:8pt;opacity:.5">GRADO IPE</div></div></div>' +
+    '<table><tr><th>Factor</th><th>Dimensiones</th><th style="text-align:right">Puntos</th></tr>' +
+    '<tr><td><b>Impacto</b></td><td>Impacto '+(s.niveles&&s.niveles.impacto||'—')+' · Contribución '+(s.niveles&&s.niveles.contribucion||'—')+'</td><td style="text-align:right;font-weight:700">'+(pts.imp||0)+'</td></tr>' +
+    '<tr><td><b>Comunicación</b></td><td>Comunicación '+(s.niveles&&s.niveles.comunicacion||'—')+' · Marco '+(s.niveles&&s.niveles.marco||'—')+'</td><td style="text-align:right;font-weight:700">'+(pts.com||0)+'</td></tr>' +
+    '<tr><td><b>Innovación</b></td><td>Innovación '+(s.niveles&&s.niveles.innovacion||'—')+' · Complejidad '+(s.niveles&&s.niveles.complejidad||'—')+'</td><td style="text-align:right;font-weight:700">'+(pts.inn||0)+'</td></tr>' +
+    '<tr><td><b>Conocimiento</b></td><td>Conocimiento '+(s.niveles&&s.niveles.conocimiento||'—')+' · Equipos '+(s.niveles&&s.niveles.equipos||'—')+' · Amplitud '+(s.niveles&&s.niveles.amplitud||'—')+'</td><td style="text-align:right;font-weight:700">'+(pts.con||0)+'</td></tr>' +
+    '<tr class="total"><td colspan="2"><b>TOTAL</b></td><td class="pts-cell" style="text-align:right"><b>'+(s.total||0)+'</b></td></tr></table>' +
+    '<div style="background:#f9f9f9;border-radius:6px;padding:12px;margin-top:14px;font-size:9.5pt">' +
+    '<b>Clasificación Mercer:</b> '+info.key+' · '+info.label+' · '+info.desc+'<br>' +
+    '<b>Banda de carrera:</b> '+careerBand(s.ipe)+'</div>' +
+    '<div class="sign" style="border:1px solid #e0e0e0;border-radius:4px;margin-top:20px"><table>' +
+    '<tr><th style="width:40%">Responsable de valuación</th><th style="width:35%">Aprobado en mesa</th><th>Fecha de mesa</th></tr>' +
+    '</table></div></body></html>';
+  var w=window.open('','_blank'); w.document.write(html); w.document.close(); w.focus(); setTimeout(function(){w.print();},500);
+}
+
+/* ── Comparador ── */
+var cmpSelected = {A:null, B:null};
+
+function getAllCargosForCmp() {
+  return [
+    ...sesiones.map(function(s,i){return {id:'ses_'+i,source:'sesión',cargo:s.cargo,gerencia:s.gerencia,ipe:s.ipe,total:s.total||null,niveles:s.niveles||null,puntos:s.puntos||null};}),
+    ...mapData.filter(function(x){return x.ipe;}).map(function(x,i){return {id:'map_'+i,source:'mapa',cargo:x.cargo,gerencia:x.gerencia,ipe:x.ipe,total:null,niveles:null,puntos:null};})
+  ];
+}
+
+function renderComparador() {
+  var el = document.getElementById('comparadorBody'); if(!el) return;
+  el.innerHTML =
+    '<div class="cmp-search-wrap">' +
+      '<div>' +
+        '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px">Cargo A</div>' +
+        '<div class="cmp-search-box" id="searchBoxA">' +
+          '<input type="text" id="cmpSearchA" placeholder="Buscar cargo…" autocomplete="off" style="width:100%;background:var(--surface2);border:1px solid var(--line2);border-radius:8px;padding:8px 11px;color:var(--ink);font-family:var(--body)">' +
+          '<div class="cmp-dropdown" id="cmpDropA"></div>' +
+        '</div>' +
+        '<div class="cmp-slot" id="cmpSlotA" style="margin-top:8px;background:var(--surface2);border:1px solid var(--line);border-radius:10px;min-height:80px"><div style="padding:16px;color:var(--muted);font-size:13px">Selecciona un cargo</div></div>' +
+      '</div>' +
+      '<div class="cmp-vs" style="display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--muted);margin-top:24px">VS</div>' +
+      '<div>' +
+        '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px">Cargo B</div>' +
+        '<div class="cmp-search-box" id="searchBoxB">' +
+          '<input type="text" id="cmpSearchB" placeholder="Buscar cargo…" autocomplete="off" style="width:100%;background:var(--surface2);border:1px solid var(--line2);border-radius:8px;padding:8px 11px;color:var(--ink);font-family:var(--body)">' +
+          '<div class="cmp-dropdown" id="cmpDropB"></div>' +
+        '</div>' +
+        '<div class="cmp-slot" id="cmpSlotB" style="margin-top:8px;background:var(--surface2);border:1px solid var(--line);border-radius:10px;min-height:80px"><div style="padding:16px;color:var(--muted);font-size:13px">Selecciona un cargo</div></div>' +
+      '</div>' +
+    '</div>' +
+    '<div id="cmpTableWrap"></div>' +
+    '<div id="cmpIAWrap" style="margin-top:12px"></div>';
+  initCmpSearch('A'); initCmpSearch('B');
+}
+
+function initCmpSearch(side) {
+  var inp  = document.getElementById('cmpSearch'+side);
+  var drop = document.getElementById('cmpDrop'+side);
+  if(!inp||!drop) return;
+  inp.addEventListener('focus', function(){ showCmpDrop(side, inp.value); });
+  inp.addEventListener('input', function(){ showCmpDrop(side, inp.value); });
+  drop.addEventListener('click', function(e) {
+    var opt = e.target.closest('.cmp-opt[data-id]');
+    if(opt) selectCmpCargo(side, opt.dataset.id);
+  });
+  document.addEventListener('click', function(e) {
+    if(!e.target.closest('#searchBox'+side)) drop.classList.remove('open');
+  });
+}
+
+function showCmpDrop(side, query) {
+  var drop = document.getElementById('cmpDrop'+side);
+  var q = (query||'').toLowerCase().trim();
+  var all = getAllCargosForCmp();
+  var filtered = all.filter(function(c){
+    return !q || c.cargo.toLowerCase().includes(q) || c.gerencia.toLowerCase().includes(q) || String(c.ipe).includes(q);
+  }).slice(0,20);
+  drop.innerHTML = !filtered.length
+    ? '<div class="cmp-opt" style="color:var(--muted);cursor:default">'+(all.length===0?'Sin cargos — valúa y guarda primero, o carga el mapa.':'Sin resultados.')+'</div>'
+    : filtered.map(function(c){
+        return '<div class="cmp-opt" data-id="'+c.id+'">' +
+          '<div><div style="font-weight:500;color:var(--ink)">'+c.cargo+'</div><div style="font-size:11px;color:var(--muted)">'+c.gerencia+' · '+c.source+'</div></div>' +
+          '<span style="font-family:var(--mono);font-weight:600;font-size:11px;background:var(--surface3,#222537);color:var(--gold);border-radius:3px;padding:1px 6px">IPE '+c.ipe+'</span>' +
+          '</div>';
+      }).join('');
+  drop.classList.add('open');
+}
+
+function selectCmpCargo(side, id) {
+  var all = getAllCargosForCmp();
+  var cargo = all.find(function(c){return c.id===id;}); if(!cargo) return;
+  cmpSelected[side] = cargo;
+  document.getElementById('cmpDrop'+side).classList.remove('open');
+  document.getElementById('cmpSearch'+side).value = cargo.cargo;
+  renderCmpSlot(side, cargo);
+  if(cmpSelected.A && cmpSelected.B) renderCmpTable();
+}
+
+function renderCmpSlot(side, c) {
+  var slot = document.getElementById('cmpSlot'+side); if(!slot) return;
+  var info = getMercerLevelInfo(c.ipe, c.niveles&&c.niveles.impacto, c.niveles&&c.niveles.equipos);
+  var border = side==='A' ? 'var(--brand)' : 'var(--gold)';
+  slot.style.border = '2px solid '+border;
+  slot.innerHTML =
+    '<div style="padding:14px">' +
+      '<div style="font-size:40px;font-weight:700;color:var(--gold);letter-spacing:-2px;line-height:1">'+c.ipe+'</div>' +
+      '<div style="font-size:14px;font-weight:600;color:var(--ink);margin:3px 0 2px">'+c.cargo+'</div>' +
+      '<div style="font-size:11.5px;color:var(--muted);margin-bottom:8px">'+c.gerencia+' · <span style="color:var(--brand)">'+c.source+'</span></div>' +
+      '<div style="font-size:11.5px;color:var(--ink2)">'+info.key+' · '+info.label+'</div>' +
+      (c.total?'<div style="font-size:12px;color:var(--muted);margin-top:4px;font-family:var(--mono)">'+c.total+' pts</div>':'') +
+      '<button onclick="clearCmpSide(\''+side+'\')" style="margin-top:10px;font-size:11.5px;padding:5px 10px;border-radius:6px;border:1px solid var(--line);background:var(--surface3,#222537);color:var(--ink2);cursor:pointer;width:100%">✕ Quitar</button>' +
+    '</div>';
+}
+
+function clearCmpSide(side) {
+  cmpSelected[side] = null;
+  document.getElementById('cmpSearch'+side).value = '';
+  document.getElementById('cmpSlot'+side).innerHTML = '<div style="padding:16px;color:var(--muted);font-size:13px">Selecciona un cargo</div>';
+  document.getElementById('cmpSlot'+side).style.border = '1px solid var(--line)';
+  document.getElementById('cmpTableWrap').innerHTML = '';
+  document.getElementById('cmpIAWrap').innerHTML = '';
+}
+
+function renderCmpTable() {
+  var A=cmpSelected.A, B=cmpSelected.B;
+  var wrap=document.getElementById('cmpTableWrap'); if(!wrap||!A||!B) return;
+  var diff = A.ipe - B.ipe;
+  var mlA = getMercerLevelInfo(A.ipe, A.niveles&&A.niveles.impacto, A.niveles&&A.niveles.equipos);
+  var mlB = getMercerLevelInfo(B.ipe, B.niveles&&B.niveles.impacto, B.niveles&&B.niveles.equipos);
+  var html =
+    '<div style="background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:14px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">' +
+      '<div style="text-align:center">' +
+        '<div style="font-size:28px;font-weight:800;color:'+(diff===0?'var(--muted)':diff>0?'#34D399':'#F87171')+'">'+(diff===0?'=':(diff>0?'▲ ':'▼ ')+Math.abs(diff))+'</div>' +
+        '<div style="font-size:10px;color:var(--muted)">grado(s) IPE</div>' +
+      '</div>' +
+      '<div style="flex:1;font-size:13px;color:var(--ink2)">' +
+        (diff===0?'Mismo grado IPE.':diff>0?'<b>'+A.cargo+'</b> está '+Math.abs(diff)+' grado(s) sobre <b>'+B.cargo+'</b>':'<b>'+B.cargo+'</b> está '+Math.abs(diff)+' grado(s) sobre <b>'+A.cargo+'</b>') +
+        '<div style="font-size:11.5px;color:var(--muted);margin-top:4px">'+mlA.key+' '+mlA.label+' vs '+mlB.key+' '+mlB.label+'</div>' +
+      '</div>' +
+      (A.niveles&&B.niveles?'<button id="btnCmpIA" class="btn sec" style="font-size:12px;flex-shrink:0">Análisis IA</button>':'') +
+    '</div>';
+
+  if(A.niveles && B.niveles) {
+    var DIMS_CMP = {impacto:{l:'Impacto',max:5},contribucion:{l:'Contribución',max:5},comunicacion:{l:'Comunicación',max:5},marco:{l:'Marco',max:4},innovacion:{l:'Innovación',max:6},complejidad:{l:'Complejidad',max:4},conocimiento:{l:'Conocimiento',max:8},equipos:{l:'Equipos',max:3},amplitud:{l:'Amplitud',max:3}};
+    html += '<div style="border-radius:10px;overflow:hidden;border:1px solid var(--line);margin-top:16px">';
+    html += '<div style="display:grid;grid-template-columns:160px 1fr 1fr;background:var(--surface2);border-bottom:1px solid var(--line2)">';
+    html += '<div style="padding:9px 13px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)">Dimensión</div>';
+    html += '<div style="padding:9px 13px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--brand)">'+A.cargo+'</div>';
+    html += '<div style="padding:9px 13px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--gold)">'+B.cargo+'</div></div>';
+    Object.keys(DIMS_CMP).forEach(function(dim) {
+      var vA=parseFloat(A.niveles[dim]||0), vB=parseFloat(B.niveles[dim]||0), d=vA-vB;
+      var mx=DIMS_CMP[dim].max;
+      html += '<div style="display:grid;grid-template-columns:160px 1fr 1fr;border-bottom:1px solid var(--line)'+(Math.abs(d)>=1?';background:rgba(245,158,11,.05)':'')+'">';
+      html += '<div style="padding:9px 13px;font-size:13px;font-weight:500;color:var(--ink2);border-right:1px solid var(--line)">'+DIMS_CMP[dim].l+'</div>';
+      html += '<div style="padding:9px 13px;display:flex;align-items:center;gap:8px"><span style="font-family:var(--mono);font-weight:600;font-size:14px;color:'+(d>0?'#34D399':'var(--ink)')+'">'+vA+'</span><div style="height:4px;border-radius:2px;background:var(--brand);opacity:.6;width:'+(vA?Math.round(80*vA/mx)+'px':'0')+'"></div>'+(d>0?'<span style="color:#34D399;font-size:11px;margin-left:auto">▲</span>':'')+'</div>';
+      html += '<div style="padding:9px 13px;display:flex;align-items:center;gap:8px"><span style="font-family:var(--mono);font-weight:600;font-size:14px;color:'+(d<0?'#34D399':'var(--ink)')+'">'+vB+'</span><div style="height:4px;border-radius:2px;background:var(--gold);opacity:.6;width:'+(vB?Math.round(80*vB/mx)+'px':'0')+'"></div>'+(d<0?'<span style="color:#34D399;font-size:11px;margin-left:auto">▲</span>':'')+'</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+  wrap.innerHTML = html;
+
+  // Listener botón IA
+  var iaBtn = document.getElementById('btnCmpIA');
+  if(iaBtn) iaBtn.addEventListener('click', function(){cmpIAnalysis(A,B);});
+}
+
+async function cmpIAnalysis(A, B) {
+  if(!A||!B||!A.niveles||!B.niveles) return;
+  var btn=document.getElementById('btnCmpIA');
+  if(btn){btn.disabled=true;btn.innerHTML='<span class="spin"></span>';}
+  var diffs = Object.keys({impacto:1,contribucion:1,comunicacion:1,marco:1,innovacion:1,complejidad:1,conocimiento:1,equipos:1,amplitud:1})
+    .filter(function(d){return (parseFloat(A.niveles[d]||0)-parseFloat(B.niveles[d]||0))!==0;})
+    .map(function(d){return d+': A='+A.niveles[d]+' B='+B.niveles[d];}).join(', ');
+  var sys = 'Eres experto en compensaciones Mercer IPE. Explica en máx 150 palabras, en prosa clara para un gerente de área, por qué estos dos cargos tienen grados IPE distintos: cuál es la dimensión más diferenciadora y si la diferencia es metodológicamente sólida.';
+  try {
+    var raw = await callClaude('A: '+A.cargo+' ('+A.gerencia+') IPE '+A.ipe+'\nB: '+B.cargo+' ('+B.gerencia+') IPE '+B.ipe+'\nDiferencias: '+diffs, sys);
+    document.getElementById('cmpIAWrap').innerHTML = '<div style="background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:14px;font-size:13.5px;line-height:1.7;color:var(--ink2)">'+raw.trim()+'</div>';
+  } catch(e) {
+    document.getElementById('cmpIAWrap').innerHTML = '<div class="err" style="display:block">'+e.message+'</div>';
+  }
+  if(btn){btn.disabled=false;btn.innerHTML='Análisis IA';}
+}
+
+/* ── Masivo ── */
+var masiveQueue = [];
+
+function downloadMasiveTemplate() {
+  var headers=['Cargo','Gerencia','Subárea','Reporta a','País','Lidera personas (Sí/No)','Propósito','Responsabilidad 1','Responsabilidad 2','Responsabilidad 3','Responsabilidad 4','Responsabilidad 5','Contactos internos','Contactos externos','Negocia externamente','Reportes directos','Reportes indirectos','Tipo de equipo','Educación mínima','Experiencia mínima','Conocimientos técnicos','Alcance geográfico','Presupuesto','Principal resultado que impacta','Nivel de autonomía'];
+  var example=['Jefe CD Logística','Logística','Distribución','Jefe de Operaciones CD','Chile','Sí','Asegurar KPIs de recepción y almacenaje liderando equipo operativo.','Liderar equipo de operarios.','Controlar KPIs de CD.','Coordinar con transportistas.','','','Jefe Operaciones, Planificación.','Transportistas y 3PL.','Sí — intereses compartidos','8','0','8 operarios de bodega.','Universitario titulado','3-5 años logística','WMS, KPIs, seguridad.','Local (una ciudad / región)','Sí — seguimiento','Retrasos en despacho afectan disponibilidad.','Opera bajo estándares y procedimientos'];
+  var ws=XLSX.utils.aoa_to_sheet([headers,example]);
+  var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Descriptores');
+  XLSX.writeFile(wb,'Template_Descriptores_IPE.xlsx');
+}
+
+function parseMasiveFile(file, callback) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var wb=XLSX.read(e.target.result,{type:'array'});
+      var rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''});
+      if(!rows.length){callback(null,'El archivo está vacío');return;}
+      var norm=function(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();};
+      var find=function(keys,row){var rk=Object.keys(row);for(var i=0;i<rk.length;i++){if(keys.some(function(q){return norm(rk[i]).includes(q);}))return row[rk[i]];}return '';};
+      var cargos=rows.map(function(r){return{
+        dc_cargo:String(find(['cargo','puesto'],r)||'').trim(),
+        dc_gerencia:String(find(['gerencia','area'],r)||'').trim(),
+        dc_subarea:String(find(['subarea'],r)||'').trim(),
+        dc_reporte:String(find(['reporte','reporta'],r)||'').trim(),
+        dc_pais:String(find(['pais','ciudad'],r)||'Chile').trim(),
+        dc_jerarquico:String(find(['lidera','jerarquico'],r)||'No').trim(),
+        dc_proposito:String(find(['proposito','mision'],r)||'').trim(),
+        dc_resp1:String(find(['responsabilidad 1','resp1'],r)||'').trim(),
+        dc_resp2:String(find(['responsabilidad 2','resp2'],r)||'').trim(),
+        dc_resp3:String(find(['responsabilidad 3'],r)||'').trim(),
+        dc_resp4:String(find(['responsabilidad 4'],r)||'').trim(),
+        dc_resp5:String(find(['responsabilidad 5'],r)||'').trim(),
+        dc_contactos_int:String(find(['contactos int','interno'],r)||'').trim(),
+        dc_contactos_ext:String(find(['contactos ext','externo'],r)||'').trim(),
+        dc_negociacion:String(find(['negocia'],r)||'No').trim(),
+        dc_reportes_dir:String(find(['reportes dir','directos'],r)||'0').trim(),
+        dc_reportes_ind:String(find(['reportes ind','indirectos'],r)||'0').trim(),
+        dc_tipo_equipo:String(find(['tipo equipo'],r)||'').trim(),
+        dc_educacion:String(find(['educacion'],r)||'Universitario titulado').trim(),
+        dc_experiencia:String(find(['experiencia'],r)||'').trim(),
+        dc_conocimiento:String(find(['conocimiento'],r)||'').trim(),
+        dc_alcance:String(find(['alcance'],r)||'Nacional (todo Chile)').trim(),
+        dc_presupuesto:String(find(['presupuesto'],r)||'No').trim(),
+        dc_impacto_ctx:String(find(['impacto ctx','resultado'],r)||'').trim(),
+        dc_autonomia:String(find(['autonomia'],r)||'Opera bajo estándares y procedimientos').trim(),
+      };}).filter(function(c){return c.dc_cargo;});
+      callback(cargos,null);
+    }catch(err){callback(null,'Error: '+err.message);}
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function loadMasiveFile(file) {
+  parseMasiveFile(file, function(cargos, err) {
+    var errEl=document.getElementById('masiveErr');
+    if(err){errEl.textContent=err;errEl.style.display='block';return;}
+    errEl.style.display='none';
+    masiveQueue=cargos.map(function(c){return{descriptor:c,status:'pending',resultado:null};});
+    renderMasiveQueue();
+  });
+}
+
+function renderMasiveQueue() {
+  var qEl=document.getElementById('masiveQueue'),listEl=document.getElementById('masiveList');
+  if(!qEl||!listEl) return;
+  qEl.style.display='block';
+  document.getElementById('masiveCount').textContent=masiveQueue.length+' cargo(s) en cola';
+  listEl.innerHTML=masiveQueue.map(function(item,i){
+    return '<div class="masive-row" id="masiveRow_'+i+'">' +
+      '<span class="masive-status pending" id="masiveSt_'+i+'">En cola</span>' +
+      '<span class="masive-cargo">'+item.descriptor.dc_cargo+' <span style="color:var(--muted);font-size:12px">· '+item.descriptor.dc_gerencia+'</span></span>' +
+      '<span class="masive-ipe" id="masiveIpe_'+i+'"></span>' +
+      '</div>';
+  }).join('');
+}
+
+async function runMasiveValuation() {
+  var btn=document.getElementById('masiveStart');
+  btn.disabled=true;btn.textContent='Valuando…';
+  for(var i=0;i<masiveQueue.length;i++){
+    var item=masiveQueue[i];if(item.status==='ok')continue;
+    var stEl=document.getElementById('masiveSt_'+i);
+    var ipeEl=document.getElementById('masiveIpe_'+i);
+    if(stEl){stEl.textContent='Valuando…';stEl.className='masive-status running';}
+    document.getElementById('masiveProgress').style.width=(100*i/masiveQueue.length)+'%';
+    try{
+      var prompt=descriptorToText(item.descriptor);
+      var jer=(item.descriptor.dc_jerarquico||'').toLowerCase().startsWith('s')?'El rol ES jerárquico.':'El rol NO es jerárquico: equipos máximo 1.5.';
+      var raw=await callClaude(prompt+'\n'+jer,SYS);
+      var p=parseJSONRobusto(raw);
+      var snap={};
+      for(var dim in DIMS){
+        var v=parseFloat(p.niveles[dim]);
+        var dd=DIMS[dim];
+        var ok=dd.allowed.filter(function(x){return !blockedNow(dim,x);});
+        if(!ok.includes(v))v=ok.reduce(function(a,b){return Math.abs(b-v)<Math.abs(a-v)?b:a;});
+        snap[dim]=v;
+      }
+      snap.tamano=state.tamano;
+      var r=engine(snap);
+      item.resultado={ipe:r.ipe,total:r.total,puntos:{imp:r.pImp,com:r.pCom,inn:r.pInn,con:r.pCon}};
+      item.niveles=snap;item.justificaciones=p.justificaciones||{};item.status='ok';
+      sesiones.unshift({cargo:item.descriptor.dc_cargo,gerencia:item.descriptor.dc_gerencia,
+        ipe:r.ipe,total:r.total,n:1,session:true,niveles:Object.assign({},snap),
+        puntos:item.resultado.puntos,descriptor:item.descriptor,
+        justificaciones:item.justificaciones,fecha:new Date().toISOString()});
+      if(stEl){stEl.textContent='✓';stEl.className='masive-status ok';}
+      if(ipeEl)ipeEl.textContent='IPE '+r.ipe;
+    }catch(e){
+      item.status='error';
+      if(stEl){stEl.textContent='Error';stEl.className='masive-status err';}
+    }
+    await new Promise(function(r){setTimeout(r,800);});
+  }
+  document.getElementById('masiveProgress').style.width='100%';
+  btn.disabled=false;btn.textContent='Completado ✓';
+  renderMap();
+}
+
+/* ── expSetCSV ── */
+document.getElementById('expSetCSV') && document.getElementById('expSetCSV').addEventListener('click', function() {
+  if(!sesiones.length) return;
+  var cols=['Cargo','Gerencia','IPE','Total','Impacto','Contribucion','Comunicacion','Marco','Innovacion','Complejidad','Conocimiento','Equipos','Amplitud','PtsImp','PtsCom','PtsInn','PtsCon','Banda'];
+  var rows=sesiones.map(function(s){return[s.cargo,s.gerencia,s.ipe,s.total||'',
+    (s.niveles&&s.niveles.impacto)||'',(s.niveles&&s.niveles.contribucion)||'',
+    (s.niveles&&s.niveles.comunicacion)||'',(s.niveles&&s.niveles.marco)||'',
+    (s.niveles&&s.niveles.innovacion)||'',(s.niveles&&s.niveles.complejidad)||'',
+    (s.niveles&&s.niveles.conocimiento)||'',(s.niveles&&s.niveles.equipos)||'',(s.niveles&&s.niveles.amplitud)||'',
+    (s.puntos&&s.puntos.imp)||'',(s.puntos&&s.puntos.com)||'',
+    (s.puntos&&s.puntos.inn)||'',(s.puntos&&s.puntos.con)||'',
+    careerBand(s.ipe)].join(';');});
+  var csv=cols.join(';')+String.fromCharCode(10)+rows.join(String.fromCharCode(10));
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([String.fromCharCode(0xFEFF)+csv],{type:'text/csv'}));
+  a.download='SET_Valuaciones_IPE.csv';a.click();
+});
+
+/* ── Listeners masivo ── */
+(function() {
+  var drop=document.getElementById('masiveDrop');
+  var inp=document.getElementById('masiveFileInp');
+  if(drop&&inp){
+    drop.addEventListener('click',function(){inp.click();});
+    drop.addEventListener('dragover',function(e){e.preventDefault();drop.classList.add('hover');});
+    drop.addEventListener('dragleave',function(){drop.classList.remove('hover');});
+    drop.addEventListener('drop',function(e){e.preventDefault();drop.classList.remove('hover');if(e.dataTransfer.files[0])loadMasiveFile(e.dataTransfer.files[0]);});
+    inp.addEventListener('change',function(e){if(e.target.files[0])loadMasiveFile(e.target.files[0]);});
+  }
+  var startBtn=document.getElementById('masiveStart');
+  if(startBtn) startBtn.addEventListener('click',runMasiveValuation);
+  var clearBtn=document.getElementById('masiveClear');
+  if(clearBtn) clearBtn.addEventListener('click',function(){masiveQueue=[];document.getElementById('masiveQueue').style.display='none';});
+})();
+
+/* ── docLoadBtn: conectar aquí porque processExternalDoc está en este script ── */
+(function() {
+  var btn=document.getElementById('docLoadBtn');
+  var inp=document.getElementById('docFileInp');
+  if(btn&&inp&&!btn._extInit){
+    btn._extInit=true;
+    btn.addEventListener('click',function(){inp.click();});
+    inp.addEventListener('change',function(e){if(e.target.files[0])processExternalDoc(e.target.files[0]);});
+  }
+})();
+
+/* ── Descriptor: renderizar formulario al cargar ── */
+(function() {
+  var cont=document.getElementById('descriptorIndContainer');
+  if(cont&&!cont.innerHTML) renderDescriptor('descriptorIndContainer');
+  // Clasificación Mercer en panel resultado (hook sobre recalc existente)
+  var _orig=typeof recalc==='function'?recalc:null;
+  if(_orig&&!window._mercerPatched){
+    window._mercerPatched=true;
+    recalc=function(){
+      _orig.apply(this,arguments);
+      var r=engine(state);if(!r||!r.ipe)return;
+      var info=getMercerLevelInfo(r.ipe,state.impacto,state.equipos);
+      var el=document.getElementById('mercerBox');if(!el)return;
+      el.style.display='block';
+      el.innerHTML='<div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px">Clasificación Mercer</div>'+
+        '<div style="display:flex;align-items:center;gap:8px"><span style="width:9px;height:9px;border-radius:50%;background:'+info.color+';flex-shrink:0"></span>'+
+        '<span style="font-size:12.5px;font-weight:700;color:var(--ink)">'+info.key+' · '+info.label+'</span></div>'+
+        '<div style="font-size:11px;color:var(--muted);margin-top:4px">'+info.desc+'</div>';
+    };
+  }
+})();
+
+
+</script>
+</body>
+</html>
